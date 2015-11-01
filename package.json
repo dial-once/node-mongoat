@@ -1,0 +1,19 @@
+{
+  "name": "node-mongodm",
+  "version": "1.0.0",
+  "description": "node-mongodm is a MongoDb ODM",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dial-once/node-mongodm.git"
+  },
+  "author": "khatal.yacine@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dial-once/node-mongodm/issues"
+  },
+  "homepage": "https://github.com/dial-once/node-mongodm#readme"
+}
