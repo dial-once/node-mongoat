@@ -1,1 +1,1 @@
-module.exports = require('./lib/mongol');
+module.exports = require('./lib/mongoat');
