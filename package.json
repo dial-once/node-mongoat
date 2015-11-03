@@ -1,20 +1,21 @@
 {
-  "name": "node-mongodm",
+  "name": "mongoat",
   "version": "1.0.0",
-  "description": "node-mongodm is a MongoDb ODM",
+  "description": "Mongoat is a MongoDb ODM",
   "main": "index.js",
   "scripts": {
     "test": "npm test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dial-once/node-mongodm.git"
+    "url": "git+https://github.com/dial-once/node-mongoat.git"
   },
   "author": "khatal.yacine@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dial-once/node-mongodm/issues"
+    "url": "https://github.com/dial-once/node-mongoat/issues"
   },
-  "homepage": "https://github.com/dial-once/node-mongodm#readme",
-  "dependencies": {}
+  "homepage": "https://github.com/dial-once/node-mongoat#readme",
+  "dependencies": {
+  }
 }
