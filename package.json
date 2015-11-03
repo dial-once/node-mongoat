@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/dial-once/node-mongodm/issues"
   },
-  "homepage": "https://github.com/dial-once/node-mongodm#readme"
+  "homepage": "https://github.com/dial-once/node-mongodm#readme",
+  "dependencies": {}
 }
