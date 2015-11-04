@@ -4,7 +4,7 @@
   "description": "Mongoat is a MongoDb ODM",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "./node_modules/.bin/jasmine"
   },
   "repository": {
     "type": "git",
