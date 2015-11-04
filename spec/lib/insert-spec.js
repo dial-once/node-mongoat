@@ -11,7 +11,7 @@ describe('Insert', function() {
   beforeAll(function (done) {
     _this = this;
 
-    mongoat.MongoClient.connect('mongodb://localhost:27017/test')
+    mongoat.MongoClient.connect('mongodb://localhost:27017/mongoatTest')
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
