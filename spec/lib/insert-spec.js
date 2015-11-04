@@ -20,10 +20,34 @@ describe('Insert', function() {
   });
 
   // close db after all tests
-  afterAll(function() {
-    if (_this.testDb) {
+  afterAll(function (done) {
+    _this.testCol.find()
+    .toArray()
+    .then(function (mongoArray) {
+      expect(mongoArray.length).toBe(6);
+
+      for (var i = 0; i < mongoArray.length; ++i) {
+        expect(mongoArray[i].firstName).toBe('Yacine');
+        expect(mongoArray[i].lastName).toBe('KHATAl');
+        expect(mongoArray[i].age).toBe(25);
+
+        if (i === 1) {
+          expect(mongoArray[i].job).toBe('software engineer');
+        } else if (i > 1) {
+          expect(mongoArray[i].job).toBe('software engineer');
+          expect(mongoArray[i].email).toBe('khatal.yacine@gmail.com');
+          expect(mongoArray[i].company).toBe('Dial Once');
+        }
+      }
+
       _this.testDb.close();
-    }
+      done();
+    })
+    .catch(function (err) {
+      console.error(err);
+      _this.testDb.close();
+      done();
+    });
   });
 
   it('should insert new document to Person collection',
