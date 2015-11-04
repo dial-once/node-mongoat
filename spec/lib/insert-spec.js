@@ -8,7 +8,7 @@ var _this;
 // test insert method
 describe('Insert', function() {
   // connect to db before all tests
-  beforeAll(function(done) {
+  beforeAll(function (done) {
     _this = this;
 
     mongoat.MongoClient.connect('mongodb://localhost:27017/test')
