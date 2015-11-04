@@ -7,6 +7,13 @@ var Utils = {
     array.forEach(function (promisedCallback) {
       promises.push(promisedCallback(document));
     });
+    
+    if (array.length <= 0) {
+      promises.push(new Promise(function(resolve, reject) {
+        reject = reject || null; // to avoid jshint unused code
+        return resolve(document);
+      }));
+    }
 
     return promises;
   },
