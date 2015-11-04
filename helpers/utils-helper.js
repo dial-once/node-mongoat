@@ -11,7 +11,7 @@ var Utils = {
     return promises;
   },
 
-  beforeAfter: function (opType, opName, hooks, callback) {
+  setBeforeOrAfter: function (opType, opName, hooks, callback) {
     var promisedCallback = function (query) {
       return new Promise(function(resolve, reject) {
         return resolve(callback(query));
