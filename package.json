@@ -18,5 +18,8 @@
   "homepage": "https://github.com/dial-once/node-mongoat#readme",
   "dependencies": {
     "mongodb": "^2.0.47"
+  },
+  "devDependencies": {
+    "jasmine": "^2.3.2"
   }
 }
