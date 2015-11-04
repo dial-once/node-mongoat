@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test insert method
-describe('Insert', function() {
+describe('Insert', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -53,7 +53,7 @@ describe('Insert', function() {
   });
 
   // test insert without hooks
-  describe('Insert without hooks', function() {
+  describe('Insert without hooks', function () {
     it('should insert new document to Person collection',
       function (done) {
         _this.testCol.insert({
@@ -70,8 +70,9 @@ describe('Insert', function() {
       });
   });
 
-  // test only with one before insert hook
-  describe('Insert with before hooks', function() {
+  // test before insert hooks
+  describe('Insert with before hooks', function () {
+    // test only with one before insert hook
     it('should insert new document to Person collection and handle before insert hook',
     function (done) {
       // add before insert hook
@@ -131,8 +132,9 @@ describe('Insert', function() {
     });
   });
   
-  // test only with one after insert hook
-  describe('Insert with after hooks', function() {
+  // test after insert hooks
+  describe('Insert with after hooks', function () {
+    // test only with one after insert hook
     it('should insert new document to Person collection and handle after insert hook',
     function (done) {
       // add after insert hook
@@ -189,7 +191,7 @@ describe('Insert', function() {
   });
 
   // test with multiple before and after insert hooks
-  describe('Insert with before and after hooks', function() {
+  describe('Insert with before and after hooks', function () {
     it('should insert new document to Person collection and handle before and after insert hooks',
     function (done) {
       // add before insert hooks
