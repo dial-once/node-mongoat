@@ -41,6 +41,7 @@ describe('Insert', function() {
         }
       }
 
+      _this.testDb.dropDatabase();
       _this.testDb.close();
       done();
     })
