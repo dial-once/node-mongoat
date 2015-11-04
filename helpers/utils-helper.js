@@ -20,16 +20,8 @@ var Utils = {
     };
 
     if (opType === 'before') {
-      if (hooks.before[opName] === undefined) {
-        hooks.before[opName] = [];
-      }
-      
       hooks.before[opName].push(promisedCallback);
     } else if (opType === 'after') {
-      if (hooks.after[opName] === undefined) {
-        hooks.after[opName] = [];
-      }
-
       hooks.after[opName].push(promisedCallback);
     }
 
