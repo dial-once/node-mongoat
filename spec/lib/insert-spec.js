@@ -5,6 +5,7 @@ var mongoat = require('../../index');
 
 var _this;
 
+// test insert method
 describe('Insert', function() {
   // connect to db before all tests
   beforeAll(function(done) {
@@ -50,23 +51,26 @@ describe('Insert', function() {
     });
   });
 
-  it('should insert new document to Person collection',
-    function (done) {
-      _this.testCol.insert({
-        firstName: 'Yacine',
-        lastName: 'KHATAl',
-        age: 25
-      }).then(function (mongObject) {
-        expect(typeof mongObject).toBe('object');
-        expect(typeof mongObject.result).toBe('object');
-        expect(mongObject.result.ok).toBe(1);
-        expect(mongObject.result.n).toBe(1);
-        done();
+  // test insert without hooks
+  describe('Insert without hooks', function() {
+    it('should insert new document to Person collection',
+      function (done) {
+        _this.testCol.insert({
+          firstName: 'Yacine',
+          lastName: 'KHATAl',
+          age: 25
+        }).then(function (mongObject) {
+          expect(typeof mongObject).toBe('object');
+          expect(typeof mongObject.result).toBe('object');
+          expect(mongObject.result.ok).toBe(1);
+          expect(mongObject.result.n).toBe(1);
+          done();
+        });
       });
-    });
+  });
 
+  // test only with one before insert hook
   describe('Insert with before hooks', function() {
-    // test only one before insert hook
     it('should insert new document to Person collection and handle before insert hook',
     function (done) {
       // add before insert hook
@@ -91,7 +95,7 @@ describe('Insert', function() {
       });
     });
 
-    // test multiple before insert hooks
+    // test with multiple before insert hooks
     it('should insert new document to Person collection and handle before insert hooks',
     function (done) {
       // add before insert hooks
@@ -125,9 +129,9 @@ describe('Insert', function() {
       });
     });
   });
-
+  
+  // test only with one after insert hook
   describe('Insert with after hooks', function() {
-    // test only one before insert hook
     it('should insert new document to Person collection and handle after insert hook',
     function (done) {
       // add after insert hook
@@ -151,10 +155,10 @@ describe('Insert', function() {
       });
     });
 
-    // test multiple after insert hooks
+    // test with multiple after insert hooks
     it('should insert new document to Person collection and handle after insert hooks',
     function (done) {
-      // add before insert hooks
+      // add after insert hooks
       _this.testCol.after('insert', function (object) {
         expect(object.firstName).toBe('Yacine');
         expect(object.lastName).toBe('KHATAl');
@@ -183,9 +187,8 @@ describe('Insert', function() {
     });
   });
 
-  
+  // test with multiple before and after insert hooks
   describe('Insert with before and after hooks', function() {
-    // test multiple before and after insert hook
     it('should insert new document to Person collection and handle before and after insert hooks',
     function (done) {
       // add before insert hooks
@@ -206,7 +209,7 @@ describe('Insert', function() {
         return object;
       });
 
-      // add before insert hooks
+      // add after insert hooks
       _this.testCol.after('insert', function (object) {
         expect(object.firstName).toBe('Yacine');
         expect(object.lastName).toBe('KHATAl');
