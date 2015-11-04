@@ -47,6 +47,9 @@ describe('Insert', function() {
     function (done) {
       // add before insert hook
       _this.testCol.before('insert', function (object) {
+        expect(object.firstName).toBe('Yacine');
+        expect(object.lastName).toBe('KHATAl');
+        expect(object.age).toBe(25);
         object.job = 'software engineer';
         return object;
       });
@@ -69,11 +72,18 @@ describe('Insert', function() {
     function (done) {
       // add before insert hooks
       _this.testCol.before('insert', function (object) {
+        expect(object.firstName).toBe('Yacine');
+        expect(object.lastName).toBe('KHATAl');
+        expect(object.age).toBe(25);
         object.email = 'khatal.yacine@gmail.com';
         return object;
       });
 
       _this.testCol.before('insert', function (object) {
+        expect(object.firstName).toBe('Yacine');
+        expect(object.lastName).toBe('KHATAl');
+        expect(object.age).toBe(25);
+        expect(object.email).toBe('khatal.yacine@gmail.com');
         object.company = 'Dial Once';
         return object;
       });
