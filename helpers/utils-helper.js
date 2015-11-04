@@ -14,6 +14,7 @@ var Utils = {
   setBeforeOrAfter: function (opType, opName, hooks, callback) {
     var promisedCallback = function (query) {
       return new Promise(function(resolve, reject) {
+        reject = reject || null; // to avoid jshint unused code
         return resolve(callback(query));
       });
     };
