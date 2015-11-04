@@ -39,4 +39,55 @@ describe('Insert', function() {
         done();
       });
     });
+
+  describe('Insert with before hooks', function() {
+    // test only one before insert hook
+    it('should insert new document to Person collection and handle before insert hook',
+    function (done) {
+      // add before insert hook
+      _this.testCol.before('insert', function (object) {
+        object.job = 'software engineer';
+        return object;
+      });
+
+      _this.testCol.insert({
+        firstName: 'Yacine',
+        lastName: 'KHATAl',
+        age: 25
+      }).then(function (mongObject) {
+        expect(typeof mongObject).toBe('object');
+        expect(typeof mongObject.result).toBe('object');
+        expect(mongObject.result.ok).toBe(1);
+        expect(mongObject.result.n).toBe(1);
+        done();
+      });
+    });
+
+    // test multiple before insert hooks
+    it('should insert new document to Person collection and handle before insert hook',
+    function (done) {
+      // add before insert hooks
+      _this.testCol.before('insert', function (object) {
+        object.email = 'khatal.yacine@gmail.com';
+        return object;
+      });
+
+      _this.testCol.before('insert', function (object) {
+        object.company = 'Dial Once';
+        return object;
+      });
+
+      _this.testCol.insert({
+        firstName: 'Yacine',
+        lastName: 'KHATAl',
+        age: 25
+      }).then(function (mongObject) {
+        expect(typeof mongObject).toBe('object');
+        expect(typeof mongObject.result).toBe('object');
+        expect(mongObject.result.ok).toBe(1);
+        expect(mongObject.result.n).toBe(1);
+        done();
+      });
+    });
+  });
 });
