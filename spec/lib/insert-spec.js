@@ -12,6 +12,7 @@ describe('Insert', function() {
 
     mongoat.MongoClient.connect('mongodb://localhost:27017/test')
     .then(function (db) {
+      db.dropDatabase();
       _this.testDb = db;
       _this.testCol = db.collection('Person');
       done();
