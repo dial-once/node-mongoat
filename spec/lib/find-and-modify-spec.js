@@ -39,7 +39,7 @@ describe('findAndModify', function () {
   });
 
   // test findAndModify without hooks
-  it('should findAndModify new document to Person collection',
+  it('should upsert new document to Person collection',
   function (done) {
     _this.testCol.findAndModify(
       { firstName: 'Yacine' },
@@ -62,7 +62,7 @@ describe('findAndModify', function () {
   });
 
   // test with multiple before and after findAndModify hooks
-  it('should findAndModify document from Person collection and handle before and after findAndModify hooks',
+  it('should findAndModify document from Person collection and handle before and after update hooks',
   function (done) {
     // add before findAndModify hooks
     _this.testCol.before('update', function (object) {
