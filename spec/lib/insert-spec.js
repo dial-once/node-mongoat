@@ -16,6 +16,7 @@ describe('Insert', function () {
       db.dropDatabase();
       _this.testDb = db;
       _this.testCol = db.collection('Person-insert');
+      _this.testCol.datetime(true);
 
       done();
     });
@@ -32,6 +33,7 @@ describe('Insert', function () {
         expect(mongoArray[i].firstName).toBe('Yacine');
         expect(mongoArray[i].lastName).toBe('KHATAl');
         expect(mongoArray[i].age).toBe(25);
+        expect(mongoArray[i].createdAt).toBeDefined();
         if (i > 0) {
           expect(mongoArray[i].email).toBe('khatal.yacine@gmail.com');
           expect(mongoArray[i].company).toBe('Dial Once');
