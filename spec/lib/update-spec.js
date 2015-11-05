@@ -39,7 +39,7 @@ describe('update', function () {
   });
 
   // test update without hooks
-  it('should update new document to Person collection',
+  it('should upsert new document to Person collection',
   function (done) {
     _this.testCol.update(
     { firstName: 'Yacine' },
@@ -57,7 +57,7 @@ describe('update', function () {
   });
 
   // test with multiple before and after update hooks
-  it('should update new document to Person collection and handle before and after update hooks',
+  it('should update document from Person collection and handle before and after update hooks',
   function (done) {
     // add before update hooks
     _this.testCol.before('update', function (object) {
