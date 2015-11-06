@@ -17,6 +17,7 @@ describe('findAndModify', function () {
       _this.testDb = db;
       _this.testCol = db.collection('Person-findAndModify');
       _this.testCol.datetime(true);
+      _this.testCol.version(true);
 
       done();
     });
@@ -34,6 +35,7 @@ describe('findAndModify', function () {
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.createdAt).toBeDefined();
       expect(mongObject.updatedAt).toBeDefined();
+      expect(mongObject._version).toBe(2);
 
       _this.testDb.dropDatabase();
       _this.testDb.close();
