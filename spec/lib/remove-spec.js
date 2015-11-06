@@ -13,7 +13,7 @@ describe('Insert', function () {
 
     mongoat.MongoClient.connect('mongodb://localhost:27017/mongoatTest')
     .then(function (db) {
-      // db.dropDatabase();
+      db.dropDatabase();
       _this.testDb = db;
       _this.testCol = db.collection('Person-remove');
       _this.testCol.version(true);
@@ -29,7 +29,7 @@ describe('Insert', function () {
     .then(function (mongoArray) {
       expect(mongoArray.length).toBe(0);
 
-      // _this.testDb.dropDatabase();
+      _this.testDb.dropDatabase();
       _this.testDb.close();
       done();
     });
