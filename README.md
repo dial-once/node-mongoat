@@ -8,6 +8,9 @@
 ## Description
 Mongoat is a [MongoDB](https://www.mongodb.org/) ODM. It is written on top of the [mongodb npm package](https://github.com/mongodb/node-mongodb-native) to add new features.
 
+## Documentation
+Because we Mongoat is written on top of the mongodb native driver, you can find more about [here](http://mongodb.github.io/node-mongodb-native/2.0/api/)
+
 ## Features
 - Hooks
 - Enabling datetime (createdAt & updatedAt)
