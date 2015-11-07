@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test insert method
-describe('Insert', function () {
+describe('Remove', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,8 +15,7 @@ describe('Insert', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-remove');
-      _this.testCol.version(true);
+      _this.testCol = db.collection('Person.remove');
 
       done();
     });
