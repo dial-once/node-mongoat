@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test findAndModify method
-describe('findAndModify', function () {
+describe('FindAndModify', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,9 +15,8 @@ describe('findAndModify', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-findAndModify');
+      _this.testCol = db.collection('Person.findAndModify');
       _this.testCol.datetime(true);
-      _this.testCol.version(true);
 
       done();
     });
@@ -35,7 +34,6 @@ describe('findAndModify', function () {
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.createdAt).toBeDefined();
       expect(mongObject.updatedAt).toBeDefined();
-      expect(mongObject._version).toBe(2);
 
       _this.testDb.dropDatabase();
       _this.testDb.close();
