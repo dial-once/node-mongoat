@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test update method
-describe('update', function () {
+describe('Update', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,9 +15,8 @@ describe('update', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-update');
+      _this.testCol = db.collection('Person.update');
       _this.testCol.datetime(true);
-      _this.testCol.version(true);
 
       done();
     });
@@ -25,20 +24,23 @@ describe('update', function () {
 
   // close db after all tests
   afterAll(function (done) {
-    _this.testCol.find()
-    .nextObject()
-    .then(function (mongObject) {
-      expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
-      expect(mongObject.age).toBe(25);
-      expect(mongObject.company).toBe('Dial Once');
-      expect(mongObject.job).toBe('software engineer');
-      expect(mongObject.createdAt).toBeDefined();
-      expect(mongObject._version).toBe(2);
+    _this.testCol.restore(1).then(function (doc) {
+      console.log(doc);
+    });
 
-      _this.testDb.dropDatabase();
-      _this.testDb.close();
-      done();
+      _this.testCol.find()
+      .nextObject()
+      .then(function (mongObject) {
+        expect(mongObject.firstName).toBe('Yacine');
+        expect(mongObject.lastName).toBe('KHATAl');
+        expect(mongObject.age).toBe(25);
+        expect(mongObject.company).toBe('Dial Once');
+        expect(mongObject.job).toBe('software engineer');
+        expect(mongObject.createdAt).toBeDefined();
+
+        _this.testDb.dropDatabase();
+        done();
+        _this.testDb.close();
     });
   });
 
