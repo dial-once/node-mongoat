@@ -25,11 +25,15 @@ describe('Versioning', function () {
 
   // close db after all tests
   afterAll(function (done) {
+    _this.testCol = _this.testDb.collection('Person.verioning.vermongo');
+    
     _this.testCol.find()
-    .nextObject()
-    .then(function (mongObject) {
-      // _this.testDb.dropDatabase();
+    .toArray()
+    .then(function (mongoArray) {
+      expect(mongoArray.length).toBe(7);
+      
       _this.testDb.close();
+      _this.testDb.dropDatabase();
       
       done();
     });
