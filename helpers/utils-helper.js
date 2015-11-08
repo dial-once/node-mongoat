@@ -35,6 +35,7 @@ var Utils = {
     return hooks;
   },
 
+  /*jshint maxcomplexity: 10 */
   setDatetime: function (opName, datetime, document, options) {
     if (datetime) {
       if (opName === 'update') {
