@@ -33,6 +33,28 @@ var Utils = {
     }
 
     return hooks;
+  },
+
+  setDatetime: function (opName, datetime, document, options) {
+    if (datetime) {
+      if (opName === 'update') {
+        if (!document.$set && !document.$setOnInsert) {
+          document.updatedAt = new Date();
+          if (options && options.upsert) {
+            document.createdAt = new Date();
+          }
+        } else {
+          document.$set = document.$set || {};
+          document.$set.updatedAt = new Date();
+          
+          document.$setOnInsert = document.$setOnInsert || {};
+          document.$setOnInsert.createdAt = new Date();
+        }
+      } else if (opName === 'insert') {
+        document.createdAt = new Date();
+      }
+    }
+    return document;
   }
 };
 
