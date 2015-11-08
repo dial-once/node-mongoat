@@ -45,12 +45,12 @@ describe('Update', function () {
   });
 
   // test update without hooks
-  it('should upsert new document to Person collection',
+  it('should upsert new document to collection',
   function (done) {
     _this.testCol.update(
-    { firstName: 'Yacine' },
-    { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
-    { upsert: true }
+      { firstName: 'Yacine' },
+      { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
+      { upsert: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
@@ -63,7 +63,7 @@ describe('Update', function () {
   });
 
   // test with multiple before and after update hooks
-  it('should update document from Person collection and handle before and after update hooks',
+  it('should update document from collection and handle before and after update hooks',
   function (done) {
     // add before update hooks
     _this.testCol.before('update', function (object) {
