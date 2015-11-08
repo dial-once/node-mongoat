@@ -47,7 +47,7 @@ describe('Insert', function () {
   });
 
   // test insert without hooks
-  it('should insert new document to Person collection',
+  it('should insert new document to collection',
   function (done) {
     _this.testCol.insert({
       firstName: 'Yacine',
@@ -63,7 +63,7 @@ describe('Insert', function () {
   });
 
   // test with multiple before and after insert hooks
-  it('should insert new document to Person collection and handle before and after insert hooks',
+  it('should insert new document to collection and handle before and after insert hooks',
   function (done) {
     // add before insert hooks
     _this.testCol.before('insert', function (object) {
