@@ -56,7 +56,7 @@ describe('Versioning', function () {
   function (done) {
     _this.testCol.update(
       { firstName: 'Yacine' },
-      { $set: { age: 30 } }
+      { $set: { age: 30, company: 'Dial Once' } }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
@@ -69,7 +69,7 @@ describe('Versioning', function () {
   });
 
   // test update without hooks
-  it('should restore document by version',
+  it('should update document from collection',
   function (done) {
     _this.testCol.update(
       { firstName: 'Yacine' },
@@ -85,61 +85,83 @@ describe('Versioning', function () {
     });
   });
 
-  // test update without hooks
-  it('should upsert new document to collection',
+  // test restore without hooks
+  it('should restore version 1 of the document by version',
   function (done) {
     _this.testCol.restore(-7)
     .then(function (mongObject) {
-      console.log('mongObject:', mongObject);
-      // expect(typeof mongObject).toBe('object');
-      // expect(typeof mongObject.result).toBe('object');
-      // expect(mongObject.result.ok).toBe(1);
-      // expect(mongObject.result.n).toBe(1);
-      // expect(mongObject.result.nModified).toBe(1);
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject.company).toBeUndefined();
       
       done();
     });
   });
 
-  // // test with multiple before and after update hooks
-  // it('should update document from Person collection and handle before and after update hooks',
-  // function (done) {
-  //   // add before update hooks
-  //   _this.testCol.before('update', function (object) {
-  //     expect(object.$set.job).toBe('software engineer');
-  //     return object;
-  //   });
-
-  //   _this.testCol.before('update', function (object) {
-  //     expect(object.$set.job).toBe('software engineer');
-  //     object.$set.company = 'Dial Once';
-  //     return object;
-  //   });
-
-  //   // add after update hooks
-  //   _this.testCol.after('update', function (object) {
-  //     expect(object.$set.job).toBe('software engineer');
-  //     expect(object.$set.company).toBe('Dial Once');
-  //     return object;
-  //   });
-
-  //   _this.testCol.after('update', function (object) {
-  //     expect(object.$set.job).toBe('software engineer');
-  //     expect(object.$set.company).toBe('Dial Once');
-  //     return object;
-  //   });
-
-  //   _this.testCol.update(
-  //     { firstName: 'Yacine' },
-  //     { $set: { job: 'software engineer' } }
-  //   ).then(function (mongObject) {
-  //     expect(typeof mongObject).toBe('object');
-  //     expect(typeof mongObject.result).toBe('object');
-  //     expect(mongObject.result.ok).toBe(1);
-  //     expect(mongObject.result.n).toBe(1);
-  //     expect(mongObject.result.nModified).toBe(1);
+  // test restore without hooks
+  it('should restore version 3 document by version',
+  function (done) {
+    _this.testCol.restore(3)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(35);
+      expect(mongObject.job).toBe('software engineer');
+      expect(mongObject.company).toBe('Dial Once');
       
-  //     done();
-  //   });
-  // });
+      done();
+    });
+  });
+
+  // test restore without hooks
+  it('should restore version 2 document by version',
+  function (done) {
+    _this.testCol.restore(2)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(30);
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject.job).toBeUndefined();
+      
+      done();
+    });
+  });
+
+  // test restore without hooks
+  it('should restore last version of the document by version',
+  function (done) {
+    _this.testCol.restore(0)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(35);
+      expect(mongObject.job).toBe('software engineer');
+      expect(mongObject.company).toBe('Dial Once');
+      
+      done();
+    });
+  });
+
+  // test restore without hooks
+  it('should restore version -2 of the document by version',
+  function (done) {
+    _this.testCol.restore(-2)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject.company).toBeUndefined();
+      
+      done();
+    });
+  });
 });
