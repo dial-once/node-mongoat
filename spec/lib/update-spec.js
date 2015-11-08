@@ -24,23 +24,20 @@ describe('Update', function () {
 
   // close db after all tests
   afterAll(function (done) {
-    _this.testCol.restore(1).then(function (doc) {
-      console.log(doc);
-    });
+    _this.testCol.find()
+    .nextObject()
+    .then(function (mongObject) {
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject.job).toBe('software engineer');
+      expect(mongObject.createdAt).toBeDefined();
 
-      _this.testCol.find()
-      .nextObject()
-      .then(function (mongObject) {
-        expect(mongObject.firstName).toBe('Yacine');
-        expect(mongObject.lastName).toBe('KHATAl');
-        expect(mongObject.age).toBe(25);
-        expect(mongObject.company).toBe('Dial Once');
-        expect(mongObject.job).toBe('software engineer');
-        expect(mongObject.createdAt).toBeDefined();
-
-        _this.testDb.dropDatabase();
-        done();
-        _this.testDb.close();
+      _this.testDb.dropDatabase();
+      _this.testDb.close();
+      
+      done();
     });
   });
 
