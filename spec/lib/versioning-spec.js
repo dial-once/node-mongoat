@@ -19,6 +19,28 @@ describe('Versioning', function () {
       _this.testCol.datetime(true);
       _this.testCol.version(true);
 
+      // add before update hooks
+      _this.testCol.before('update', function (object) {
+        expect(typeof object).toBe('object');
+        return object;
+      });
+
+      _this.testCol.before('update', function (object) {
+        expect(typeof object).toBe('object');
+        return object;
+      });
+
+      // add after update hooks
+      _this.testCol.after('update', function (object) {
+        expect(typeof object).toBe('object');
+        return object;
+      });
+
+      _this.testCol.after('update', function (object) {
+        expect(typeof object).toBe('object');
+        return object;
+      });
+
       done();
     });
   });
@@ -39,13 +61,25 @@ describe('Versioning', function () {
     });
   });
 
-  // test insert without hooks
+  // test restore
+  it('should throw error',
+  function (done) {
+   _this.testCol.restore(-2)
+    .catch(function (err) {
+      expect(typeof err).toBe('object');
+      expect(err.message).toBe('Nothing to restore');
+      
+      done();
+    });
+  });
+
+  // test insert
   it('should insert new document to collection',
   function (done) {
     _this.testCol.insert({
-      firstName: 'Yacine',
+      firstName: 'Hichem',
       lastName: 'KHATAl',
-      age: 25
+      age: 28
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
@@ -55,7 +89,26 @@ describe('Versioning', function () {
     });
   });
 
-  // test update without hooks
+
+  // test upsert
+  it('should upsert new document to collection',
+  function (done) {
+    _this.testCol.update(
+      { firstName: 'Yacine' },
+      { $setOnInsert: { lastName: 'KHATAL', age: 25 } },
+      { upsert: true }
+    ).then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(0);
+      
+      done();
+    });
+  });
+
+  // test update
   it('should update document from collection',
   function (done) {
     _this.testCol.update(
@@ -72,7 +125,7 @@ describe('Versioning', function () {
     });
   });
 
-  // test update without hooks
+  // test update
   it('should update document from collection',
   function (done) {
     _this.testCol.update(
@@ -89,14 +142,14 @@ describe('Versioning', function () {
     });
   });
 
-  // test restore without hooks
+  // test restore
   it('should restore version 1 of the document by version',
   function (done) {
     _this.testCol.restore(-7)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.job).toBeUndefined();
       expect(mongObject.company).toBeUndefined();
@@ -105,14 +158,14 @@ describe('Versioning', function () {
     });
   });
 
-  // test restore without hooks
+  // test restore
   it('should restore version 3 document by version',
   function (done) {
     _this.testCol.restore(3)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(35);
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.company).toBe('Dial Once');
@@ -121,14 +174,14 @@ describe('Versioning', function () {
     });
   });
 
-  // test restore without hooks
+  // test restore
   it('should restore version 2 document by version',
   function (done) {
     _this.testCol.restore(2)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(30);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
@@ -137,14 +190,14 @@ describe('Versioning', function () {
     });
   });
 
-  // test restore without hooks
+  // test restore
   it('should restore last version of the document by version',
   function (done) {
     _this.testCol.restore(0)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(35);
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.company).toBe('Dial Once');
@@ -153,14 +206,14 @@ describe('Versioning', function () {
     });
   });
 
-  // test restore without hooks
+  // test restore
   it('should restore version -2 of the document by version',
   function (done) {
     _this.testCol.restore(-2)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.job).toBeUndefined();
       expect(mongObject.company).toBeUndefined();
