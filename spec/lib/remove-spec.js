@@ -16,6 +16,7 @@ describe('Remove', function () {
       db.dropDatabase();
       _this.testDb = db;
       _this.testCol = db.collection('Person.remove');
+      _this.testCol.version(true);
 
       done();
     });
