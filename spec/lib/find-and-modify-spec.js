@@ -29,7 +29,7 @@ describe('FindAndModify', function () {
     .nextObject()
     .then(function (mongObject) {
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBe('software engineer');
@@ -48,14 +48,14 @@ describe('FindAndModify', function () {
     _this.testCol.findAndModify(
       { firstName: 'Yacine' },
       [['_id', 1]],
-      { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
+      { $setOnInsert: { lastName: 'KHATAL', age: 25 } },
       { upsert: true, new: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
       expect(mongObject.value.firstName).toBe('Yacine');
-      expect(mongObject.value.lastName).toBe('KHATAl');
+      expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.age).toBe(25);
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(false);
@@ -103,7 +103,7 @@ describe('FindAndModify', function () {
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
       expect(mongObject.value.firstName).toBe('Yacine');
-      expect(mongObject.value.lastName).toBe('KHATAl');
+      expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.job).toBe('software engineer');
       expect(mongObject.value.company).toBe('Dial Once');
       expect(mongObject.value.age).toBe(25);
