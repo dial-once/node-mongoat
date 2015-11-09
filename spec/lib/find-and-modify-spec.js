@@ -17,6 +17,7 @@ describe('FindAndModify', function () {
       _this.testDb = db;
       _this.testCol = db.collection('Person.findAndModify');
       _this.testCol.datetime(true);
+      _this.testCol.version(true);
 
       done();
     });
