@@ -18,21 +18,25 @@ var Utils = {
     return promises;
   },
 
-  setBeforeOrAfter: function (opType, opName, hooks, callback) {
-    var promisedCallback = function (query) {
-      return new Promise(function(resolve, reject) {
-        reject = reject || null; // to avoid jshint unused code
-        return resolve(callback(query));
-      });
-    };
-
-    if (opType === 'before') {
-      hooks.before[opName].push(promisedCallback);
-    } else if (opType === 'after') {
-      hooks.after[opName].push(promisedCallback);
+  setDatetime: function (opName, datetime, document) {
+    if (datetime) {
+      if (opName === 'update') {
+        if (!document.$set && !document.$setOnInsert) {
+          document.updatedAt = new Date();
+          document.createdAt = new Date();
+        } else {
+          document.$set = document.$set || {};
+          document.$set.updatedAt = new Date();
+          
+          document.$setOnInsert = document.$setOnInsert || {};
+          document.$setOnInsert.createdAt = new Date();
+        }
+      } else if (opName === 'insert') {
+        document.createdAt = new Date();
+        document.updatedAt = new Date();
+      }
     }
-
-    return hooks;
+    return document;
   }
 };
 

@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test findAndModify method
-describe('findAndModify', function () {
+describe('FindAndModify', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,8 +15,9 @@ describe('findAndModify', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-findAndModify');
+      _this.testCol = db.collection('Person.findAndModify');
       _this.testCol.datetime(true);
+      _this.testCol.version(true);
 
       done();
     });
@@ -28,7 +29,7 @@ describe('findAndModify', function () {
     .nextObject()
     .then(function (mongObject) {
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBe('software engineer');
@@ -47,14 +48,14 @@ describe('findAndModify', function () {
     _this.testCol.findAndModify(
       { firstName: 'Yacine' },
       [['_id', 1]],
-      { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
+      { $setOnInsert: { lastName: 'KHATAL', age: 25 } },
       { upsert: true, new: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
       expect(mongObject.value.firstName).toBe('Yacine');
-      expect(mongObject.value.lastName).toBe('KHATAl');
+      expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.age).toBe(25);
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(false);
@@ -102,7 +103,7 @@ describe('findAndModify', function () {
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
       expect(mongObject.value.firstName).toBe('Yacine');
-      expect(mongObject.value.lastName).toBe('KHATAl');
+      expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.job).toBe('software engineer');
       expect(mongObject.value.company).toBe('Dial Once');
       expect(mongObject.value.age).toBe(25);

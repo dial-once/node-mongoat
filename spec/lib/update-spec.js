@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test update method
-describe('update', function () {
+describe('Update', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,8 +15,9 @@ describe('update', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-update');
+      _this.testCol = db.collection('Person.update');
       _this.testCol.datetime(true);
+      _this.testCol.version(true);
 
       done();
     });
@@ -28,26 +29,26 @@ describe('update', function () {
     .nextObject()
     .then(function (mongObject) {
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.createdAt).toBeDefined();
-      expect(mongObject.updatedAt).toBeDefined();
 
       _this.testDb.dropDatabase();
       _this.testDb.close();
+      
       done();
     });
   });
 
   // test update without hooks
-  it('should upsert new document to Person collection',
+  it('should upsert new document to collection',
   function (done) {
     _this.testCol.update(
-    { firstName: 'Yacine' },
-    { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
-    { upsert: true }
+      { firstName: 'Yacine' },
+      { firstName: 'Yacine', lastName: 'KHATAL', age: 25 },
+      { upsert: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
@@ -60,7 +61,7 @@ describe('update', function () {
   });
 
   // test with multiple before and after update hooks
-  it('should update document from Person collection and handle before and after update hooks',
+  it('should update document from collection and handle before and after update hooks',
   function (done) {
     // add before update hooks
     _this.testCol.before('update', function (object) {

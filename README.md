@@ -9,7 +9,7 @@
 Mongoat is a [MongoDB](https://www.mongodb.org/) ODM. It is written on top of the [mongodb npm package](https://github.com/mongodb/node-mongodb-native) to add new features.
 
 ## Documentation
-Because we Mongoat is written on top of the mongodb native driver, you can find more about [here](http://mongodb.github.io/node-mongodb-native/2.0/api/)
+Because Mongoat is written on top of the mongodb native driver, you can find more about [here](http://mongodb.github.io/node-mongodb-native/2.0/api/)
 
 ## Features
 - Hooks
@@ -92,6 +92,31 @@ db.collection('collectionName').update(query, update, options);
 db.collection('collectionName').findAndModify(query, sort, update, options);
 ```
 
+## Versioning
+Enable versioning feature:
+```javascript
+    db.collection('collectionName').version(true); // Default is false
+```
+Enabling this feature for a collection, so each time you perform an insert/update/remove it will create a document in the collection collectionName.vermongo and increment the version of the updated document. The _id in this collection is a composite ID, { _id: _id, _version: _version }. 
+The document in the MyCollection collection will also receive a _version field.
+
+If we want to restore a version
+```javascript
+    db.collection('collectionName').restore(versio); // Default is false
+```
+
+* if version is greater than 0, it will be considered as the version to restore
+* if version is equal or lower than 0, it will be considered as the starting point of the version to restore (starting form last) ex:
+
+```javascript
+    db.collection('collectionName').restore(0); // restore the last version
+```
+
+```javascript
+    db.collection('collectionName').restore(-2); // restore the last version -2
+```
+
+more about versioning feature [here](https://github.com/thiloplanz/v7files/wiki/Vermongo)
 
 ## Tests
 1. Run a MongoDb server if not yet

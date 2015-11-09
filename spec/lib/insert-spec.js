@@ -15,7 +15,7 @@ describe('Insert', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-insert');
+      _this.testCol = db.collection('Person.insert');
       _this.testCol.datetime(true);
 
       done();
@@ -31,7 +31,7 @@ describe('Insert', function () {
 
       for (var i = 0; i < mongoArray.length; ++i) {
         expect(mongoArray[i].firstName).toBe('Yacine');
-        expect(mongoArray[i].lastName).toBe('KHATAl');
+        expect(mongoArray[i].lastName).toBe('KHATAL');
         expect(mongoArray[i].age).toBe(25);
         expect(mongoArray[i].createdAt).toBeDefined();
         if (i > 0) {
@@ -47,11 +47,11 @@ describe('Insert', function () {
   });
 
   // test insert without hooks
-  it('should insert new document to Person collection',
+  it('should insert new document to collection',
   function (done) {
     _this.testCol.insert({
       firstName: 'Yacine',
-      lastName: 'KHATAl',
+      lastName: 'KHATAL',
       age: 25
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -63,12 +63,12 @@ describe('Insert', function () {
   });
 
   // test with multiple before and after insert hooks
-  it('should insert new document to Person collection and handle before and after insert hooks',
+  it('should insert new document to collection and handle before and after insert hooks',
   function (done) {
     // add before insert hooks
     _this.testCol.before('insert', function (object) {
       expect(object.firstName).toBe('Yacine');
-      expect(object.lastName).toBe('KHATAl');
+      expect(object.lastName).toBe('KHATAL');
       expect(object.age).toBe(25);
       object.email = 'khatal.yacine@gmail.com';
       return object;
@@ -76,7 +76,7 @@ describe('Insert', function () {
 
     _this.testCol.before('insert', function (object) {
       expect(object.firstName).toBe('Yacine');
-      expect(object.lastName).toBe('KHATAl');
+      expect(object.lastName).toBe('KHATAL');
       expect(object.age).toBe(25);
       expect(object.email).toBe('khatal.yacine@gmail.com');
       object.company = 'Dial Once';
@@ -86,7 +86,7 @@ describe('Insert', function () {
     // add after insert hooks
     _this.testCol.after('insert', function (object) {
       expect(object.firstName).toBe('Yacine');
-      expect(object.lastName).toBe('KHATAl');
+      expect(object.lastName).toBe('KHATAL');
       expect(object.age).toBe(25);
       expect(object.email).toBe('khatal.yacine@gmail.com');
       expect(object.company).toBe('Dial Once');
@@ -95,7 +95,7 @@ describe('Insert', function () {
 
     _this.testCol.after('insert', function (object) {
       expect(object.firstName).toBe('Yacine');
-      expect(object.lastName).toBe('KHATAl');
+      expect(object.lastName).toBe('KHATAL');
       expect(object.age).toBe(25);
       expect(object.email).toBe('khatal.yacine@gmail.com');
       expect(object.company).toBe('Dial Once');
@@ -104,7 +104,7 @@ describe('Insert', function () {
 
     _this.testCol.insert({
       firstName: 'Yacine',
-      lastName: 'KHATAl',
+      lastName: 'KHATAL',
       age: 25
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');

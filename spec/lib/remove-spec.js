@@ -6,7 +6,7 @@ var mongoat = require('../../index');
 var _this;
 
 // test insert method
-describe('Insert', function () {
+describe('Remove', function () {
   // connect to db before all tests
   beforeAll(function (done) {
     _this = this;
@@ -15,7 +15,8 @@ describe('Insert', function () {
     .then(function (db) {
       db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person-remove');
+      _this.testCol = db.collection('Person.remove');
+      _this.testCol.version(true);
 
       done();
     });
@@ -34,12 +35,26 @@ describe('Insert', function () {
     });
   });
 
+  // test restore
+  it('should throw error',
+  function (done) {
+    _this.testCol.remove({
+      test: '',
+    })
+    .catch(function (err) {
+      expect(typeof err).toBe('object');
+      expect(err.message).toBe('Nothing to remove');
+      
+      done();
+    });
+  });
+
   // test insert without hooks
   it('should insert new document to Person collection',
   function (done) {
     _this.testCol.insert({
       firstName: 'Yacine',
-      lastName: 'KHATAl',
+      lastName: 'KHATAL',
       age: 25
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
