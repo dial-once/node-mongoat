@@ -35,15 +35,12 @@ var Utils = {
     return hooks;
   },
 
-  /*jshint maxcomplexity: 10 */
   setDatetime: function (opName, datetime, document, options) {
     if (datetime) {
       if (opName === 'update') {
         if (!document.$set && !document.$setOnInsert) {
           document.updatedAt = new Date();
-          if (options && options.upsert) {
-            document.createdAt = new Date();
-          }
+          document.createdAt = new Date();
         } else {
           document.$set = document.$set || {};
           document.$set.updatedAt = new Date();
