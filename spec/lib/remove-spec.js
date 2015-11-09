@@ -35,6 +35,20 @@ describe('Remove', function () {
     });
   });
 
+  // test restore
+  it('should throw error',
+  function (done) {
+    _this.testCol.remove({
+      test: '',
+    })
+    .catch(function (err) {
+      expect(typeof err).toBe('object');
+      expect(err.message).toBe('Nothing to remove');
+      
+      done();
+    });
+  });
+
   // test insert without hooks
   it('should insert new document to Person collection',
   function (done) {
