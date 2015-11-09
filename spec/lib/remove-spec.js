@@ -54,7 +54,7 @@ describe('Remove', function () {
   function (done) {
     _this.testCol.insert({
       firstName: 'Yacine',
-      lastName: 'KHATAl',
+      lastName: 'KHATAL',
       age: 25
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
