@@ -53,6 +53,7 @@ var Utils = {
         }
       } else if (opName === 'insert') {
         document.createdAt = new Date();
+        document.updatedAt = new Date();
       }
     }
     return document;
