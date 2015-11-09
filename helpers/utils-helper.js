@@ -18,7 +18,7 @@ var Utils = {
     return promises;
   },
 
-  setDatetime: function (opName, datetime, document, options) {
+  setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
         if (!document.$set && !document.$setOnInsert) {
