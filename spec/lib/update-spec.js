@@ -17,6 +17,7 @@ describe('Update', function () {
       _this.testDb = db;
       _this.testCol = db.collection('Person.update');
       _this.testCol.datetime(true);
+      _this.testCol.version(true);
 
       done();
     });
@@ -46,7 +47,7 @@ describe('Update', function () {
   function (done) {
     _this.testCol.update(
       { firstName: 'Yacine' },
-      { $setOnInsert: { lastName: 'KHATAl', age: 25 } },
+      { firstName: 'Yacine', lastName: 'KHATAl', age: 25 },
       { upsert: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
