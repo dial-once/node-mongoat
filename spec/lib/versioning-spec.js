@@ -54,8 +54,8 @@ describe('Versioning', function () {
     .then(function (mongoArray) {
       expect(mongoArray.length).toBe(7);
       
-      _this.testDb.close();
       _this.testDb.dropDatabase();
+      _this.testDb.close();
       
       done();
     });
