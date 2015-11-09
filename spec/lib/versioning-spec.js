@@ -52,7 +52,7 @@ describe('Versioning', function () {
     _this.testCol.find()
     .toArray()
     .then(function (mongoArray) {
-      expect(mongoArray.length).toBe(7);
+      expect(mongoArray.length).toBe(6);
       
       _this.testDb.dropDatabase();
       _this.testDb.close();
@@ -64,7 +64,7 @@ describe('Versioning', function () {
   // test restore
   it('should throw error',
   function (done) {
-   _this.testCol.restore(-2)
+   _this.testCol.restore(3)
     .catch(function (err) {
       expect(typeof err).toBe('object');
       expect(err.message).toBe('Nothing to restore');
@@ -143,32 +143,12 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore version 1 of the document by version',
+  it('should throw error',
   function (done) {
-    _this.testCol.restore(-7)
-    .then(function (mongObject) {
-      expect(typeof mongObject).toBe('object');
-      expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAL');
-      expect(mongObject.age).toBe(25);
-      expect(mongObject.job).toBeUndefined();
-      expect(mongObject.company).toBeUndefined();
-      
-      done();
-    });
-  });
-
-  // test restore
-  it('should restore version 3 document by version',
-  function (done) {
-    _this.testCol.restore(3)
-    .then(function (mongObject) {
-      expect(typeof mongObject).toBe('object');
-      expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAL');
-      expect(mongObject.age).toBe(35);
-      expect(mongObject.job).toBe('software engineer');
-      expect(mongObject.company).toBe('Dial Once');
+   _this.testCol.restore(-7)
+    .catch(function (err) {
+      expect(typeof err).toBe('object');
+      expect(err.message).toBe('Nothing to restore');
       
       done();
     });
@@ -191,9 +171,9 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore last version of the document by version',
+  it('should restore version 3 document by version',
   function (done) {
-    _this.testCol.restore(0)
+    _this.testCol.restore(3)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
@@ -206,10 +186,27 @@ describe('Versioning', function () {
     });
   });
 
+
+  // test restore
+  it('should restore last version of the document by version',
+  function (done) {
+    _this.testCol.restore(0)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(30);
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject.job).toBeUndefined();
+      
+      done();
+    });
+  });
+
   // test restore
   it('should restore version -2 of the document by version',
   function (done) {
-    _this.testCol.restore(-2)
+    _this.testCol.restore(-4)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
