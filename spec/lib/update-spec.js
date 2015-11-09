@@ -29,7 +29,7 @@ describe('Update', function () {
     .nextObject()
     .then(function (mongObject) {
       expect(mongObject.firstName).toBe('Yacine');
-      expect(mongObject.lastName).toBe('KHATAl');
+      expect(mongObject.lastName).toBe('KHATAL');
       expect(mongObject.age).toBe(25);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBe('software engineer');
@@ -47,7 +47,7 @@ describe('Update', function () {
   function (done) {
     _this.testCol.update(
       { firstName: 'Yacine' },
-      { firstName: 'Yacine', lastName: 'KHATAl', age: 25 },
+      { firstName: 'Yacine', lastName: 'KHATAL', age: 25 },
       { upsert: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
