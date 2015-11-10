@@ -66,7 +66,7 @@ describe('Remove', function () {
   });
 
   // test with multiple before and after insert hooks
-  it('should remove document from Person collection and handle before and after insert hooks',
+  it('should remove document from Person collection and handle before and after remove hooks',
   function (done) {
     // add before insert hooks
     _this.testCol.before('remove', function (object) {
