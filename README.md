@@ -1,5 +1,5 @@
-# Mongoat
-<!-- Codacy badges -->
+# Mongoat  
+
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) [![Codacy Badge](https://api.codacy.com/project/badge/coverage/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) ![dev dependencies](https://david-dm.org/dial-once/node-mongoat.svg)
 
 ![mongoat gif](./medias/mongoat.gif)
