@@ -2,6 +2,14 @@
   "name": "mongoat",
   "version": "1.0.0",
   "description": "Mongoat is a MongoDb ODM",
+  "keywords": [
+    "mongodb",
+    "driver",
+    "legacy",
+    "odm",
+    "mongoat",
+    "layer"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/jasmine",
