@@ -1,8 +1,12 @@
 'use strict';
 
 var Utils = {
-  promisify: function (array, document) {
+  promisify: function (array, query, document) {
     var promises = [];
+
+    if (query && !document) {
+      document = query;
+    }
 
     array.forEach(function (promisedCallback) {
       promises.push(promisedCallback(document));
