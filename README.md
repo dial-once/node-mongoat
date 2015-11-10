@@ -15,7 +15,7 @@ Because Mongoat is written on top of the mongodb native driver, you can find mor
 - Hooks
 - Enabling datetime (createdAt & updatedAt)
 - Transparent usage (raw access to native MongoDB driver)
-- Versioning of documents (not yet)
+- Versioning of documents
 - Oplogs events (not yet)
 
 ## Installation
