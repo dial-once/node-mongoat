@@ -37,6 +37,24 @@ var Utils = {
       }
     }
     return document;
+  },
+
+  setParams: function (opName, query, sort, docToProcess, options) {
+    var params = [];
+
+    switch(opName) {
+    case 'update':
+      params.push(query, docToProcess, options);
+      break;
+    case 'findAndModify':
+      params.push(query, sort, docToProcess, options);
+      break;
+    default:
+      params.push(docToProcess, options);
+      break;
+    }
+
+    return params;
   }
 };
 
