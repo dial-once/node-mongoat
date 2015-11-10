@@ -20,7 +20,7 @@ Because Mongoat is written on top of the mongodb native driver, you can find mor
 
 ## Installation
 ```
- $> npm install mongodm
+ $> npm install mongoat
 ```
 
 ## Basic usage
