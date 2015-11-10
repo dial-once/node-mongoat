@@ -74,18 +74,18 @@ Enable datetime feature:
 ```
 
 ### createdAt:
-it will add a createdAt field to all new inserted documents using:
+it will add a `createdAt` field to all new inserted documents using:
 ```javascript
 db.collection('collectionName').insert(document, options);
 ```
-or using one of the following method within the option ``` upsert: ture ``` 
+or using one of the following method within the option `upsert: ture`
 ```javascript
 db.collection('collectionName').update(query, update, options);
 db.collection('collectionName').findAndModify(query, sort, update, options);
 ```
 
 ### updatedAt:
-it will add a updatedAt field to all updated documents using:
+it will add a `updatedAt` field to all updated documents using:
 ```javascript
 db.collection('collectionName').update(query, update, options);
 // or
@@ -97,12 +97,12 @@ Enable versioning feature:
 ```javascript
     db.collection('collectionName').version(true); // Default is false
 ```
-Enabling this feature for a collection, so each time you perform an insert/update/remove it will create a document in the collection collectionName.vermongo and increment the version of the updated document. The _id in this collection is a composite ID, { _id: _id, _version: _version }. 
+Enabling this feature for a collection, so each time you perform an insert/update/remove it will create a document in the collection collectionName.vermongo and increment the version of the updated document. The `_id` in this collection is a composite ID, `{ _id: _id, _version: _version }`. 
 The document in the MyCollection collection will also receive a _version field.
 
 If we want to restore a version
 ```javascript
-    db.collection('collectionName').restore(versio); // Default is false
+    db.collection('collectionName').restore(version); // Default is false
 ```
 
 * if version is greater than 0, it will be considered as the version to restore
