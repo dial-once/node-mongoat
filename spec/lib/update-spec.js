@@ -78,19 +78,31 @@ describe('Update', function () {
     // add after update hooks
     _this.testCol.after('update', function (mongObject) {
       expect(typeof mongObject).toBe('object');
-      expect(typeof mongObject.result).toBe('object');
-      expect(mongObject.result.ok).toBe(1);
-      expect(mongObject.result.n).toBe(1);
-      expect(mongObject.result.nModified).toBe(1);
+      expect(typeof mongObject.value).toBe('object');
+      expect(typeof mongObject.lastErrorObject).toBe('object');
+      expect(mongObject.value.firstName).toBe('Yacine');
+      expect(mongObject.value.lastName).toBe('KHATAL');
+      expect(mongObject.value.job).toBe('software engineer');
+      expect(mongObject.value.company).toBe('Dial Once');
+      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.ok).toBe(1);
+      expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
+      expect(mongObject.lastErrorObject.n).toBe(1);
       return mongObject;
     });
 
     _this.testCol.after('update', function (mongObject) {
       expect(typeof mongObject).toBe('object');
-      expect(typeof mongObject.result).toBe('object');
-      expect(mongObject.result.ok).toBe(1);
-      expect(mongObject.result.n).toBe(1);
-      expect(mongObject.result.nModified).toBe(1);
+      expect(typeof mongObject.value).toBe('object');
+      expect(typeof mongObject.lastErrorObject).toBe('object');
+      expect(mongObject.value.firstName).toBe('Yacine');
+      expect(mongObject.value.lastName).toBe('KHATAL');
+      expect(mongObject.value.job).toBe('software engineer');
+      expect(mongObject.value.company).toBe('Dial Once');
+      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.ok).toBe(1);
+      expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
+      expect(mongObject.lastErrorObject.n).toBe(1);
       return mongObject;
     });
 
