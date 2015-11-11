@@ -59,6 +59,46 @@ var Utils = {
     }
 
     return params;
+  },
+
+  processUpdatedDocment: function (opName, collection, query, mongObject, options) {
+    if (opName === 'update' && mongObject.result.ok) {
+      var objToReturn = {
+        value: [],
+        lastErrorObject: {}
+      };
+
+      return collection.find(query)
+      .toArray()
+      .then(function (updatedDocs) {
+        objToReturn.value = (options && options.multi && mongObject.result.n > 1) ?
+          updatedDocs : updatedDocs[0];
+
+        objToReturn.lastErrorObject.updatedExisting = (mongObject.result.nModified) ? true: false;
+
+        objToReturn.lastErrorObject.n = mongObject.result.n;
+
+        if (!mongObject.result.nModified && mongObject.result.upserted) {
+          objToReturn.lastErrorObject.upserted = updatedDocs[0]._id;
+
+          if (options && options.multi && mongObject.result.n > 1) {
+            objToReturn.lastErrorObject.upserted = [];
+            updatedDocs.forEach(function (updatedDoc) {
+              objToReturn.lastErrorObject.upserted.push(updatedDoc._id);
+            });
+          }
+        }
+
+        objToReturn.ok = mongObject.result.ok;
+
+        return objToReturn;
+      });
+    } else {
+      /*jshint unused: false*/
+      return new Promise(function (resolve, reject) {
+        resolve(mongObject);
+      });
+    }
   }
 };
 
