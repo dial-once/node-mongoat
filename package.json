@@ -1,6 +1,6 @@
 {
   "name": "mongoat",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Mongoat is a MongoDb ODM",
   "keywords": [
     "mongodb",
