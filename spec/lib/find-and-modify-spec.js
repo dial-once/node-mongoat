@@ -69,28 +69,46 @@ describe('FindAndModify', function () {
   it('should findAndModify document from Person collection and handle before and after update hooks',
   function (done) {
     // add before findAndModify hooks
-    _this.testCol.before('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      return object;
+    _this.testCol.before('update', function (document) {
+      expect(document.$set.job).toBe('software engineer');
+      return document;
     });
 
-    _this.testCol.before('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      object.$set.company = 'Dial Once';
-      return object;
+    _this.testCol.before('update', function (document) {
+      expect(document.$set.job).toBe('software engineer');
+      document.$set.company = 'Dial Once';
+      return document;
     });
 
     // add after findAndModify hooks
-    _this.testCol.after('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      expect(object.$set.company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('update', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.value).toBe('object');
+      expect(typeof mongObject.lastErrorObject).toBe('object');
+      expect(mongObject.value.firstName).toBe('Yacine');
+      expect(mongObject.value.lastName).toBe('KHATAL');
+      expect(mongObject.value.job).toBe('software engineer');
+      expect(mongObject.value.company).toBe('Dial Once');
+      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.ok).toBe(1);
+      expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
+      expect(mongObject.lastErrorObject.n).toBe(1);
+      return mongObject;
     });
 
-    _this.testCol.after('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      expect(object.$set.company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('update', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.value).toBe('object');
+      expect(typeof mongObject.lastErrorObject).toBe('object');
+      expect(mongObject.value.firstName).toBe('Yacine');
+      expect(mongObject.value.lastName).toBe('KHATAL');
+      expect(mongObject.value.job).toBe('software engineer');
+      expect(mongObject.value.company).toBe('Dial Once');
+      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.ok).toBe(1);
+      expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
+      expect(mongObject.lastErrorObject.n).toBe(1);
+      return mongObject;
     });
 
     _this.testCol.findAndModify(
