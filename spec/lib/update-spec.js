@@ -64,28 +64,34 @@ describe('Update', function () {
   it('should update document from collection and handle before and after update hooks',
   function (done) {
     // add before update hooks
-    _this.testCol.before('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      return object;
+    _this.testCol.before('update', function (document) {
+      expect(document.$set.job).toBe('software engineer');
+      return document;
     });
 
-    _this.testCol.before('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      object.$set.company = 'Dial Once';
-      return object;
+    _this.testCol.before('update', function (document) {
+      expect(document.$set.job).toBe('software engineer');
+      document.$set.company = 'Dial Once';
+      return document;
     });
 
     // add after update hooks
-    _this.testCol.after('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      expect(object.$set.company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('update', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(1);
+      return mongObject;
     });
 
-    _this.testCol.after('update', function (object) {
-      expect(object.$set.job).toBe('software engineer');
-      expect(object.$set.company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('update', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(1);
+      return mongObject;
     });
 
     _this.testCol.update(
