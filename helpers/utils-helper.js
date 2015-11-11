@@ -80,13 +80,6 @@ var Utils = {
 
         if (!mongObject.result.nModified && mongObject.result.upserted) {
           objToReturn.lastErrorObject.upserted = updatedDocs[0]._id;
-
-          if (options && options.multi && mongObject.result.n > 1) {
-            objToReturn.lastErrorObject.upserted = [];
-            updatedDocs.forEach(function (updatedDoc) {
-              objToReturn.lastErrorObject.upserted.push(updatedDoc._id);
-            });
-          }
         }
 
         objToReturn.ok = mongObject.result.ok;
