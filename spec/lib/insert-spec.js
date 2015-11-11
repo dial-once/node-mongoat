@@ -84,22 +84,22 @@ describe('Insert', function () {
     });
 
     // add after insert hooks
-    _this.testCol.after('insert', function (object) {
-      expect(object.ops[0].firstName).toBe('Yacine');
-      expect(object.ops[0].lastName).toBe('KHATAL');
-      expect(object.ops[0].age).toBe(25);
-      expect(object.ops[0].email).toBe('khatal.yacine@gmail.com');
-      expect(object.ops[0].company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('insert', function (mongObject) {
+      expect(mongObject.ops[0].firstName).toBe('Yacine');
+      expect(mongObject.ops[0].lastName).toBe('KHATAL');
+      expect(mongObject.ops[0].age).toBe(25);
+      expect(mongObject.ops[0].email).toBe('khatal.yacine@gmail.com');
+      expect(mongObject.ops[0].company).toBe('Dial Once');
+      return mongObject;
     });
 
-    _this.testCol.after('insert', function (object) {
-      expect(object.ops[0].firstName).toBe('Yacine');
-      expect(object.ops[0].lastName).toBe('KHATAL');
-      expect(object.ops[0].age).toBe(25);
-      expect(object.ops[0].email).toBe('khatal.yacine@gmail.com');
-      expect(object.ops[0].company).toBe('Dial Once');
-      return object;
+    _this.testCol.after('insert', function (mongObject) {
+      expect(mongObject.ops[0].firstName).toBe('Yacine');
+      expect(mongObject.ops[0].lastName).toBe('KHATAL');
+      expect(mongObject.ops[0].age).toBe(25);
+      expect(mongObject.ops[0].email).toBe('khatal.yacine@gmail.com');
+      expect(mongObject.ops[0].company).toBe('Dial Once');
+      return mongObject;
     });
 
     _this.testCol.insert({
