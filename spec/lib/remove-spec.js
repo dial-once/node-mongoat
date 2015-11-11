@@ -69,10 +69,10 @@ describe('Remove', function () {
   it('should remove document from Person collection and handle before and after remove hooks',
   function (done) {
     // add before insert hooks
-    _this.testCol.before('remove', function (object) {
-      expect(object.firstName).toBe('');
-      object.firstName = 'Yacine';
-      return object;
+    _this.testCol.before('remove', function (query) {
+      expect(query.firstName).toBe('');
+      query.firstName = 'Yacine';
+      return query;
     });
 
     _this.testCol.before('remove', function (object) {
@@ -81,14 +81,20 @@ describe('Remove', function () {
     });
 
     // add after insert hooks
-    _this.testCol.after('remove', function (object) {
-      expect(object.firstName).toBe('Yacine');
-      return object;
+    _this.testCol.after('remove', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      return mongObject;
     });
 
-    _this.testCol.after('remove', function (object) {
-      expect(object.firstName).toBe('Yacine');
-      return object;
+    _this.testCol.after('remove', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      return mongObject;
     });
 
     _this.testCol.remove({
