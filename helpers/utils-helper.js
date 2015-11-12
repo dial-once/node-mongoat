@@ -92,6 +92,13 @@ var Utils = {
         resolve(mongObject);
       });
     }
+  },
+
+  getHooksTemplate: function () {
+    return {
+      before: { insert: [], update: [], remove: [] },
+      after: { insert: [], update: [], remove: [] }
+    };
   }
 };
 
