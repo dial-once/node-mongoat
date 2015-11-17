@@ -30,7 +30,17 @@ var url = 'mongodb://localhost:27017/myproject'; // Connection URL
 
 mongoat.MongoClient.connect(url)
 .then(function (db) {
-    // then use it the same way as native mongodb driver
+    // then use it the same way as native mongodb driver ex:
+    db.collection('Person').insert({ name: 'myName' })
+    .then(function (ObjectReturnedByMongodb) {
+    })
+    .catch(function (err) {
+    });
+
+    // you can also use callback instead of promise ex:
+    db.collection('Person').insert({ name: 'myName' }, 
+    function (err, ObjectReturnedByMongodb) {
+    });
 });
 ```
 
