@@ -48,8 +48,9 @@ describe('Update', function () {
     _this.testCol.update(
       { firstName: 'Yacine' },
       { firstName: 'Yacine', lastName: 'KHATAL', age: 25 },
-      { upsert: true }
-    ).then(function (mongObject) {
+      { upsert: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
