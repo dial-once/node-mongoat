@@ -35,13 +35,27 @@ describe('Remove', function () {
     });
   });
 
-  // test restore
+  // test remove with promise
   it('should throw error',
   function (done) {
     _this.testCol.remove({
       test: '',
     })
     .catch(function (err) {
+      expect(typeof err).toBe('object');
+      expect(err.message).toBe('Nothing to remove');
+      
+      done();
+    });
+  });
+
+  // test remove with callback
+  it('should throw error',
+  function (done) {
+    _this.testCol.remove({
+      test: '',
+    }, function (err, mongObject) {
+      expect(mongObject).toBe(null);
       expect(typeof err).toBe('object');
       expect(err.message).toBe('Nothing to remove');
       
