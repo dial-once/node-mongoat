@@ -99,19 +99,6 @@ var Utils = {
       before: { insert: [], update: [], remove: [] },
       after: { insert: [], update: [], remove: [] }
     };
-  },
-
-  isPromised: function (options, callback) {
-    if (options && typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-
-    if (callback && typeof callback === 'function') {
-      return false;
-    } else {
-      return true;
-    }
   }
 };
 
