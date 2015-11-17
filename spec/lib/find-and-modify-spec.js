@@ -49,8 +49,9 @@ describe('FindAndModify', function () {
       { firstName: 'Yacine' },
       [['_id', 1]],
       { $setOnInsert: { lastName: 'KHATAL', age: 25 } },
-      { upsert: true, new: true }
-    ).then(function (mongObject) {
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
