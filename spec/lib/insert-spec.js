@@ -53,7 +53,8 @@ describe('Insert', function () {
       firstName: 'Yacine',
       lastName: 'KHATAL',
       age: 25
-    }).then(function (mongObject) {
+    }, function (err, mongObject) {
+      expect(err).toBe(null);
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
