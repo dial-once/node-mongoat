@@ -4,6 +4,7 @@
 var mongoat = require('../../index');
 
 var _this;
+var id;
 
 // test update method
 describe('Versioning', function () {
@@ -62,12 +63,11 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should throw error',
+  it('should return null',
   function (done) {
-   _this.testCol.restore(3)
-    .catch(function (err) {
-      expect(typeof err).toBe('object');
-      expect(err.message).toBe('Nothing to restore');
+    _this.testCol.restore()
+    .then(function (document) {
+      expect(document).toBe(null);
       
       done();
     });
@@ -77,14 +77,16 @@ describe('Versioning', function () {
   it('should insert new document to collection',
   function (done) {
     _this.testCol.insert({
-      firstName: 'Hichem',
-      lastName: 'KHATAl',
-      age: 28
+      firstName: 'Yacine',
+      lastName: 'KHATAL',
+      age: 25
     }).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
+      id = mongObject.ops[0]._id;
+      
       done();
     });
   });
@@ -94,8 +96,8 @@ describe('Versioning', function () {
   it('should upsert new document to collection',
   function (done) {
     _this.testCol.update(
-      { firstName: 'Yacine' },
-      { $setOnInsert: { lastName: 'KHATAL', age: 25 } },
+      { firstName: 'Hichem' },
+      { $setOnInsert: { lastName: 'KHATAL', age: 28 } },
       { upsert: true }
     ).then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -145,10 +147,9 @@ describe('Versioning', function () {
   // test restore
   it('should throw error',
   function (done) {
-   _this.testCol.restore(-7)
-    .catch(function (err) {
-      expect(typeof err).toBe('object');
-      expect(err.message).toBe('Nothing to restore');
+    _this.testCol.restore(id, -7)
+    .then(function (document) {
+      expect(document).toBe(null);
       
       done();
     });
@@ -157,7 +158,7 @@ describe('Versioning', function () {
   // test restore
   it('should restore version 2 document by version',
   function (done) {
-    _this.testCol.restore(2)
+    _this.testCol.restore(id, 2)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
@@ -173,7 +174,7 @@ describe('Versioning', function () {
   // test restore
   it('should restore version 3 document by version',
   function (done) {
-    _this.testCol.restore(3)
+    _this.testCol.restore(id, 3)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
@@ -190,7 +191,7 @@ describe('Versioning', function () {
   // test restore
   it('should restore last version of the document by version',
   function (done) {
-    _this.testCol.restore(0)
+    _this.testCol.restore(id, 0)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
@@ -206,7 +207,7 @@ describe('Versioning', function () {
   // test restore
   it('should restore version -2 of the document by version',
   function (done) {
-    _this.testCol.restore(-4)
+    _this.testCol.restore(id, -4)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(mongObject.firstName).toBe('Yacine');
