@@ -112,11 +112,14 @@ The document in the MyCollection collection will also receive a _version field.
 
 If we want to restore a version
 ```javascript
-    db.collection('collectionName').restore(version); // Default is false
+    db.collection('collectionName').restore(id, version);
 ```
 
+* id of the document to restore is required
 * if version is greater than 0, it will be considered as the version to restore
-* if version is equal or lower than 0, it will be considered as the starting point of the version to restore (starting form last) ex:
+* if version is equal or lower than 0, it will be considered as the starting 
+* if version is not provided, it will takes default value 0
+point of the version to restore (starting form last) ex:
 
 ```javascript
     db.collection('collectionName').restore(0); // restore the last version
