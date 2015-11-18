@@ -1,6 +1,6 @@
 # Mongoat  
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) [![Codacy Badge](https://api.codacy.com/project/badge/coverage/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) ![dev dependencies](https://david-dm.org/dial-once/node-mongoat.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) [![Codacy Badge](https://api.codacy.com/project/badge/coverage/4e5e6d2ce3594a58ab1e8bd6e8ec0e1e)](https://www.codacy.com/app/dialonce/node-mongoat) ![dev dependencies](https://david-dm.org/dial-once/node-mongoat.svg) [![Inline docs](http://inch-ci.org/github/dial-once/node-mongoat.svg?branch=master)](http://inch-ci.org/github/dial-once/node-mongoat)
 
 ![mongoat gif](./medias/mongoat.gif)
 
