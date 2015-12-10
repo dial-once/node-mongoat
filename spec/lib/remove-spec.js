@@ -36,29 +36,29 @@ describe('Remove', function () {
   });
 
   // test remove with promise
-  it('should throw error',
+  it('should remove nothing and return mongObject using promise',
   function (done) {
     _this.testCol.remove({
       test: '',
     })
-    .catch(function (err) {
-      expect(typeof err).toBe('object');
-      expect(err.message).toBe('Nothing to remove');
-      
+    .then(function (mongObject) {
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(0);
+
       done();
     });
   });
 
   // test remove with callback
-  it('should throw error',
+  it('should remove nothing and return mongObject using callback',
   function (done) {
     _this.testCol.remove({
       test: '',
     }, function (err, mongObject) {
-      expect(mongObject).toBe(null);
-      expect(typeof err).toBe('object');
-      expect(err.message).toBe('Nothing to remove');
-      
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(0);
+      expect(err).toBe(null);
+
       done();
     });
   });
@@ -118,7 +118,7 @@ describe('Remove', function () {
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
-      
+
       done();
     });
   });
