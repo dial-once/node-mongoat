@@ -37,7 +37,7 @@ describe('Update', function () {
 
       _this.testDb.dropDatabase();
       _this.testDb.close();
-      
+
       done();
     });
   });
@@ -56,7 +56,7 @@ describe('Update', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       expect(mongObject.result.nModified).toBe(0);
-      
+
       done();
     });
   });
@@ -116,7 +116,88 @@ describe('Update', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       expect(mongObject.result.nModified).toBe(1);
-      
+
+      done();
+    });
+  });
+});
+
+describe('Update field used in query', function () {
+  // connect to db before all tests
+  beforeAll(function (done) {
+    _this = this;
+
+    mongoat.MongoClient.connect('mongodb://localhost:27017/mongoatTest')
+    .then(function (db) {
+      db.dropDatabase();
+      _this.testDb = db;
+      _this.testCol = db.collection('Person.update.test');
+      _this.testCol.datetime(true);
+      _this.testCol.version(true);
+
+      done();
+    });
+  });
+
+  // close db after all tests
+  afterAll(function (done) {
+    _this.testCol.find()
+    .nextObject()
+    .then(function (mongObject) {
+      expect(mongObject.firstName).toBe('test');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.createdAt).toBeDefined();
+
+      _this.testDb.dropDatabase();
+      _this.testDb.close();
+
+      done();
+    });
+  });
+
+  // test update without hooks
+  it('should upsert new document to collection',
+  function (done) {
+    _this.testCol.update(
+      { firstName: 'Yacine' },
+      { firstName: 'Yacine', lastName: 'KHATAL', age: 25 },
+      { upsert: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(0);
+
+      done();
+    });
+  });
+
+  // test with multiple before and after update hooks
+  it('should update document from collection and handle after update hook',
+  function (done) {
+    _this.testCol.after('update', function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.value).toBeUndefined();
+      expect(mongObject.lastErrorObject).toBeUndefined();
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(1);
+      return mongObject;
+    });
+
+    _this.testCol.update(
+      { firstName: 'Yacine' },
+      { $set: { firstName: 'test' } }
+    ).then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      expect(mongObject.result.nModified).toBe(1);
+
       done();
     });
   });

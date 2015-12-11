@@ -11,7 +11,7 @@ var Utils = {
     array.forEach(function (promisedCallback) {
       promises.push(promisedCallback(document));
     });
-    
+
     if (array.length <= 0) {
       promises.push(new Promise(function(resolve, reject) {
         reject = reject || null; // to avoid jshint unused code
@@ -31,7 +31,7 @@ var Utils = {
         } else {
           document.$set = document.$set || {};
           document.$set.updatedAt = new Date();
-          
+
           document.$setOnInsert = document.$setOnInsert || {};
           document.$setOnInsert.createdAt = new Date();
         }
@@ -61,8 +61,8 @@ var Utils = {
     return params;
   },
 
-  processUpdatedDocment: function (opName, collection, query, mongObject, options) {
-    if (opName === 'update' && mongObject.result.ok) {
+  processUpdatedDocment: function (opName, collection, isAfterHook, query, mongObject, options) {
+    if (opName === 'update' && mongObject.result.ok && isAfterHook) {
       var objToReturn = {
         value: [],
         lastErrorObject: {}
@@ -71,6 +71,9 @@ var Utils = {
       return collection.find(query)
       .toArray()
       .then(function (updatedDocs) {
+        if (!updatedDocs.length) {
+          return mongObject;
+        }
         objToReturn.value = (options && options.multi && mongObject.result.n > 1) ?
           updatedDocs : updatedDocs[0];
 
