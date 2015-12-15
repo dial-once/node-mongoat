@@ -12,9 +12,10 @@
   ],
   "main": "index.js",
   "scripts": {
+    "pretest": "jshint .",
     "test": "./node_modules/.bin/jasmine",
     "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/jasmine",
-    "doc": "./node_modules/.bin/jsdoc --readme README.md --package package.json --template node_modules/minami lib/*"
+    "doc": "./node_modules/.bin/jsdoc -d ./docs --readme README.md --package package.json --template node_modules/minami lib/*"
   },
   "repository": {
     "type": "git",
