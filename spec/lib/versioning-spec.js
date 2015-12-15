@@ -167,7 +167,7 @@ describe('Versioning', function () {
       expect(mongObject.job).toBeUndefined();
 
       done();
-    })
+    });
   });
 
   // test restore
