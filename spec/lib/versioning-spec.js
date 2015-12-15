@@ -49,26 +49,25 @@ describe('Versioning', function () {
   // close db after all tests
   afterAll(function (done) {
     _this.testCol = _this.testDb.collection('Person.verioning.vermongo');
-    
+
     _this.testCol.find()
     .toArray()
     .then(function (mongoArray) {
-      expect(mongoArray.length).toBe(6);
-      
+      expect(mongoArray.length).toBe(7);
+
       _this.testDb.dropDatabase();
       _this.testDb.close();
-      
+
       done();
     });
   });
 
   // test restore
-  it('should return null',
+  it('should throw error',
   function (done) {
     _this.testCol.restore()
-    .then(function (document) {
-      expect(document).toBe(null);
-      
+    .catch(function (err) {
+      expect(err.message).toBe('The provided id is null or undefined');
       done();
     });
   });
@@ -86,7 +85,7 @@ describe('Versioning', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       id = mongObject.ops[0]._id;
-      
+
       done();
     });
   });
@@ -105,7 +104,7 @@ describe('Versioning', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       expect(mongObject.result.nModified).toBe(0);
-      
+
       done();
     });
   });
@@ -122,7 +121,7 @@ describe('Versioning', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       expect(mongObject.result.nModified).toBe(1);
-      
+
       done();
     });
   });
@@ -139,7 +138,7 @@ describe('Versioning', function () {
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
       expect(mongObject.result.nModified).toBe(1);
-      
+
       done();
     });
   });
@@ -148,9 +147,9 @@ describe('Versioning', function () {
   it('should throw error',
   function (done) {
     _this.testCol.restore(id, -7)
-    .then(function (document) {
-      expect(document).toBe(null);
-      
+    .catch(function (err) {
+      expect(err.message).toBe('The requested version doesn\'t exist');
+
       done();
     });
   });
@@ -166,9 +165,9 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(30);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
-      
+
       done();
-    });
+    })
   });
 
   // test restore
@@ -182,7 +181,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(35);
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.company).toBe('Dial Once');
-      
+
       done();
     });
   });
@@ -199,7 +198,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(30);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
-      
+
       done();
     });
   });
@@ -215,7 +214,37 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(25);
       expect(mongObject.job).toBeUndefined();
       expect(mongObject.company).toBeUndefined();
-      
+
+      done();
+    });
+  });
+
+  // test remove
+  it('should remove document from collection',
+  function (done) {
+    _this.testCol.remove({ firstName: 'Yacine' })
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+
+      done();
+    });
+  });
+
+  // test restore
+  it('should restore lest version',
+  function (done) {
+    _this.testCol.restore(id)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject.company).toBeUndefined();
+
       done();
     });
   });
