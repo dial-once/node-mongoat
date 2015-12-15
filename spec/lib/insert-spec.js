@@ -27,14 +27,14 @@ describe('Insert', function () {
     _this.testCol.find()
     .toArray()
     .then(function (mongoArray) {
-      expect(mongoArray.length).toBe(2);
+      expect(mongoArray.length).toBe(3);
 
       for (var i = 0; i < mongoArray.length; ++i) {
         expect(mongoArray[i].firstName).toBe('Yacine');
         expect(mongoArray[i].lastName).toBe('KHATAL');
         expect(mongoArray[i].age).toBe(25);
         expect(mongoArray[i].createdAt).toBeDefined();
-        if (i > 0) {
+        if (i > 1) {
           expect(mongoArray[i].email).toBe('khatal.yacine@gmail.com');
           expect(mongoArray[i].company).toBe('Dial Once');
         }
@@ -59,6 +59,52 @@ describe('Insert', function () {
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
+      done();
+    });
+  });
+
+  // test insert without hooks
+  it('should insert new document to collection with static id',
+  function (done) {
+    _this.testCol.insert({
+      _id: 'TEST_ID',
+      firstName: 'Yacine',
+      lastName: 'KHATAL',
+      age: 25
+    }, function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.result).toBe('object');
+      expect(mongObject.result.ok).toBe(1);
+      expect(mongObject.result.n).toBe(1);
+      done();
+    });
+  });
+
+  it('should not insert but throw error, using callback',
+  function (done) {
+    _this.testCol.insert({
+      _id: 'TEST_ID',
+      firstName: 'Yacine',
+      lastName: 'KHATAL',
+      age: 25
+    }, function (err, mongObject) {
+      expect(mongObject).toBe(null);
+      expect(err).toBeDefined();
+      done();
+    });
+  });
+
+  it('should not insert but throw error, using promise',
+  function (done) {
+    _this.testCol.insert({
+      _id: 'TEST_ID',
+      firstName: 'Yacine',
+      lastName: 'KHATAL',
+      age: 25
+    })
+    .catch(function (err) {
+      expect(err).toBeDefined();
       done();
     });
   });
@@ -117,7 +163,7 @@ describe('Insert', function () {
       expect(mongObject.ops[0].age).toBe(25);
       expect(mongObject.ops[0].email).toBe('khatal.yacine@gmail.com');
       expect(mongObject.ops[0].company).toBe('Dial Once');
-      
+
       done();
     });
   });
