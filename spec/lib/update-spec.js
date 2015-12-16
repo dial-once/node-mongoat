@@ -5,7 +5,6 @@ var mongoat = require('../../index');
 
 var _this;
 
-// test update method
 describe('Update', function () {
   // connect to db before all tests
   beforeAll(function (done) {
@@ -148,7 +147,7 @@ describe('Update complex cases: ', function () {
     .then(done);
   });
 
-  it('should upsert new document, automatically add an updatedAt, and shouldn\'t override the createdAt, _createdAt or test fields shouldn\'t disturb the query',
+  it('should upsert new document, automatically add an updatedAt, set the createdAt field to tomorrow, and shouldn\'t overwrite the createdAt, _createdAt or test fields shouldn\'t disturb the query',
   function (done) {
     var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     var today = new Date();
@@ -159,15 +158,18 @@ describe('Update complex cases: ', function () {
       { upsert: true, new: true },
     function (err, mongObject) {
       expect(err).toBe(null);
-      expect(mongObject.value.createdAt.getTime()).toBe(tomorrow.getTime());
-      expect(mongObject.value._createdAt.getTime()).toBe(today.getTime());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value._createdAt.getDate()).toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
       expect(mongObject.value.test).toBe('createdAt');
 
       done();
     });
   });
 
-  it('should upsert new document, automatically add a createdAt, and shouldn\'t override the updatedAt, _updatedAt or test fields shouldn\'t disturb the query',
+  it('should upsert new document, automatically add a createdAt, set the updatedAt field to tomorrow, and shouldn\'t overwrite the updatedAt, _updatedAt or test fields shouldn\'t disturb the query',
   function (done) {
     var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     var today = new Date();
@@ -178,109 +180,151 @@ describe('Update complex cases: ', function () {
       { upsert: true, new: true },
     function (err, mongObject) {
       expect(err).toBe(null);
-      expect(mongObject.value.updatedAt.getTime()).toBe(tomorrow.getTime());
-      expect(mongObject.value._updatedAt.getTime()).toBe(today.getTime());
+      expect(mongObject.value.updatedAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value._updatedAt.getDate()).toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(today.getDate());
       expect(mongObject.value.test).toBe('updatedAt');
 
       done();
     });
   });
 
-  it('should update the document, automatically add an updatedAt, and set the createdAt field to today',
+  it('should upsert new document, automatically add an updatedAt, and set the createdAt field to tomorrow',
   function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     var today = new Date();
-    _this.testCol.findAndModify(
-      { firstName: 'Test0' },
-      [['_id', 1]],
-      { $set: { createdAt: today } },
-      { upsert: true, new: true },
-    function (err, mongObject) {
-      expect(err).toBe(null);
-      expect(mongObject.value.createdAt.getTime()).toBe(today.getTime());
-      expect(mongObject.value.updatedAt).toBeDefined();
-
-      done();
-    });
-  });
-
-  it('should update the document, automatically add an updatedAt, and unset the createdAt field',
-  function (done) {
-    _this.testCol.findAndModify(
-      { firstName: 'Test0' },
-      [['_id', 1]],
-      { $unset: { createdAt: '' } },
-      { new: true },
-    function (err, mongObject) {
-      expect(err).toBe(null);
-      expect(mongObject.value.createdAt).toBeUndefined();
-      expect(mongObject.value.updatedAt).toBeDefined();
-
-      done();
-    });
-  });
-
-  it('should update the document, automatically override the updatedAt [$setOnInsert], and set the createdAt field to today',
-  function (done) {
-    var today = new Date();
-    _this.testCol.findAndModify(
-      { firstName: 'Test1' },
-      [['_id', 1]],
-      { $set: { createdAt: today }, $setOnInsert: { updatedAt: today } },
-      { new: true },
-    function (err, mongObject) {
-      expect(err).toBe(null);
-      expect(mongObject.value.createdAt.getTime()).toBe(today.getTime());
-      expect(mongObject.value.updatedAt).toBeDefined();
-
-      done();
-    });
-  });
-
-  it('should update the document and automatically override the updatedAt and createdAt fileds [$setOnInsert]',
-  function (done) {
-    var today = new Date();
-    _this.testCol.findAndModify(
-      { firstName: 'Test1' },
-      [['_id', 1]],
-      { $set: {  }, $setOnInsert: { updatedAt: today, createdAt: today } },
-      { new: true },
-    function (err, mongObject) {
-      expect(err).toBe(null);
-      expect(mongObject.value.createdAt).toBeDefined();
-      expect(mongObject.value.updatedAt).toBeDefined();
-
-      done();
-    });
-  });
-
-  it('should update the document and set the updatedAt and createdAt fileds to today [$set]',
-  function (done) {
-    var today = new Date();
-    _this.testCol.findAndModify(
-      { firstName: 'Test1' },
-      [['_id', 1]],
-      { $set: { updatedAt: today, createdAt: today }, $setOnInsert: {  } },
-      { new: true },
-    function (err, mongObject) {
-      expect(err).toBe(null);
-      expect(mongObject.value.createdAt.getTime()).toBe(today.getTime());
-      expect(mongObject.value.updatedAt.getTime()).toBe(today.getTime());
-
-      done();
-    });
-  });
-
-  it('should upsert new document and automatically add the updatedAt and createdAt fileds, test with $set and $setOnInsert',
-  function (done) {
     _this.testCol.findAndModify(
       { firstName: 'Test2' },
       [['_id', 1]],
-      { $set: {  }, $setOnInsert: {  } },
+      { $set: { createdAt: tomorrow } },
       { upsert: true, new: true },
     function (err, mongObject) {
       expect(err).toBe(null);
-      expect(mongObject.value.createdAt).toBeDefined();
-      expect(mongObject.value.updatedAt).toBeDefined();
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document, automatically add an updatedAt, and unset the createdAt field',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test3' },
+      [['_id', 1]],
+      { $unset: { createdAt: '' } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt).toBeUndefined();
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document and set the createdAt and updatedAt fields to tomorrow',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test4' },
+      [['_id', 1]],
+      { $set: { createdAt: tomorrow }, $setOnInsert: { updatedAt: tomorrow } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(tomorrow.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document, set the updatedAt to currentDate, and set the createdAt field to tomorrow',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test5' },
+      [['_id', 1]],
+      { $set: { createdAt: tomorrow }, $currentDate: { updatedAt: true } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document, automatically set the createdAt, and set the updatedAt to currentDate',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test6' },
+      [['_id', 1]],
+      { $set: { lastName: 'test' }, $currentDate: { updatedAt: true } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document and set the updatedAt and createdAt fileds to tomorrow [$setOnInsert], shouldn\'t overwrite them',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test7' },
+      [['_id', 1]],
+      { $setOnInsert: { updatedAt: tomorrow, createdAt: tomorrow } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null); // big fail
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(tomorrow.getDate());
+
+      done();
+    });
+  });
+
+  it('should upsert new document and set the updatedAt and createdAt fileds to tomorrow [$set], shouldn\'t overwrite them',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test8' },
+      [['_id', 1]],
+      { $set: { updatedAt: tomorrow, createdAt: tomorrow } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(tomorrow.getDate());
 
       done();
     });
@@ -288,32 +332,59 @@ describe('Update complex cases: ', function () {
 
   it('should upsert new document and automatically add the updatedAt and createdAt fileds, test without $set and $setOnInsert',
   function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
     _this.testCol.findAndModify(
-      { firstName: 'Test3' },
+      { firstName: 'Test9' },
       [['_id', 1]],
-      { firstName: 'Test3', lastName: 'lastName' },
+      { lastName: 'test' },
       { upsert: true, new: true },
     function (err, mongObject) {
       expect(err).toBe(null);
-      expect(mongObject.value.createdAt).toBeDefined();
-      expect(mongObject.value.updatedAt).toBeDefined();
+      expect(mongObject.value.createdAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
 
       done();
     });
   });
 
-  it('should update document and set the updatedAt and createdAt fileds to today, shouldn\'t automatically override this fileds',
+  it('should upsert new document and automatically add the updatedAt and createdAt fileds, test with $set and $setOnInsert',
   function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     var today = new Date();
     _this.testCol.findAndModify(
-      { firstName: 'Test3' },
+      { firstName: 'Test9' },
       [['_id', 1]],
-      { createdAt: today, updatedAt: today },
+      { $setOnInsert: { job: 'test' }, $set: { lastName: 'test' } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(mongObject.value.createdAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(today.getDate());
+
+      done();
+    });
+  });
+
+  it('should update document and set the updatedAt and createdAt fileds to tomorrow, shouldn\'t automatically overwrite this fileds',
+  function (done) {
+    var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    var today = new Date();
+    _this.testCol.findAndModify(
+      { firstName: 'Test0' },
+      [['_id', 1]],
+      { createdAt: tomorrow, updatedAt: tomorrow },
       { new: true },
     function (err, mongObject) {
       expect(err).toBe(null);
-      expect(mongObject.value.createdAt.getTime()).toBe(today.getTime());
-      expect(mongObject.value.updatedAt.getTime()).toBe(today.getTime());
+      expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
+      expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
+      expect(mongObject.value.updatedAt.getDate()).toBe(tomorrow.getDate());
 
       done();
     });
