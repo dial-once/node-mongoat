@@ -300,7 +300,7 @@ describe('Update complex cases: ', function () {
       { $setOnInsert: { updatedAt: tomorrow, createdAt: tomorrow } },
       { upsert: true, new: true },
     function (err, mongObject) {
-      expect(err).toBe(null); // big fail
+      expect(err).toBe(null);
       expect(mongObject.value.createdAt.getDate()).not.toBe(today.getDate());
       expect(mongObject.value.createdAt.getDate()).toBe(tomorrow.getDate());
       expect(mongObject.value.updatedAt.getDate()).not.toBe(today.getDate());
