@@ -22,6 +22,12 @@ var Utils = {
     return promises;
   },
 
+  hasProperty: function(array, toFind) {
+    return Object.keys(array).some(function (key) {
+      return ~key.indexOf(toFind);
+    });
+  },
+
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
