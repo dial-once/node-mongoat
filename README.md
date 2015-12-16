@@ -6,17 +6,21 @@
 
 
 ## Description
-Mongoat is a [MongoDB](https://www.mongodb.org/) ODM. It is written on top of the [mongodb npm package](https://github.com/mongodb/node-mongodb-native) to add new features.
+Mongoat is a [MongoDB](https://www.mongodb.org/) lightweight wrapper adding hooks (pre/post), automatic createdAt/updatedAt, in a native MongoDB experience. It is written on top of the [mongodb npm package](https://github.com/mongodb/node-mongodb-native).
+
+It does not provides any ODM, model specifications, validation, or things that would force you to use it in a specific way. Mongoat is designed to be used in a MongoDB way: your way.
 
 ## Documentation
 Because Mongoat is written on top of the mongodb native driver, you can find more about [here](http://mongodb.github.io/node-mongodb-native/2.0/api/)
 
 ## Features
-- Hooks
-- Enabling datetime (createdAt & updatedAt)
-- Transparent usage (raw access to native MongoDB driver)
-- Versioning of documents
-- Oplogs events (not yet)
+- Hooks (pre/post actions: afterSave, beforeSave, etc.)
+- Datetime documents easily (createdAt & updatedAt)
+- Native MongoDB experience and usage (you actually use the native MongoDB driver when you use Mongoat)
+- Versions documents easily (Vermongo specifications)
+
+## ToDo:
+  - Event triggering on oplog actions
 
 ## Installation
 ```
