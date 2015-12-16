@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 var Utils = {
   promisify: function (array, query, document) {
     var promises = [];
@@ -28,26 +30,29 @@ var Utils = {
     });
   },
 
-  /*jshint maxcomplexity:14 */
+  setUpdatedAtAndCreatedAt: function(document) {
+    if (!Utils.hasPropertyWithStartingChar(document, '$')) {
+      document.updatedAt = document.updatedAt || new Date();
+      document.createdAt = document.createdAt || new Date();
+    } else {
+      if (!_.has(document, '$set.createdAt') && !_.has(document, '$setOnInsert.createdAt') &&
+          !_.has(document, '$currentDate.createdAt') && !_.has(document, '$unset.createdAt')) {
+        document.$setOnInsert = document.$setOnInsert || {};
+        document.$setOnInsert.createdAt = new Date();
+      }
+
+      if (!_.has(document, '$set.updatedAt') && !_.has(document, '$setOnInsert.updatedAt') &&
+          !_.has(document, '$currentDate.updatedAt') && !_.has(document, '$unset.updatedAt')) {
+        document.$set = document.$set || {};
+        document.$set.updatedAt =  new Date();
+      }
+    }
+  },
+
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
-        if (!Utils.hasPropertyWithStartingChar(document, '$')) {
-          document.updatedAt = document.updatedAt || new Date();
-          document.createdAt = document.createdAt || new Date();
-        } else {
-          if ((document.$setOnInsert && !document.$setOnInsert.createdAt) ||
-              (document.$set && !document.$set.createdAt)) {
-            document.$setOnInsert = document.$setOnInsert || {};
-            document.$setOnInsert.createdAt = new Date();
-          }
-
-          if ((document.$setOnInsert && !document.$setOnInsert.updatedAt) ||
-              (document.$set && !document.$set.updatedAt)) {
-            document.$set = document.$set || {};
-            document.$set.updatedAt = document.$set.updatedAt || new Date();
-          }
-        }
+        Utils.setUpdatedAtAndCreatedAt(document);
       } else if (opName === 'insert') {
         document.createdAt = new Date();
         document.updatedAt = new Date();
