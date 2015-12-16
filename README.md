@@ -10,9 +10,6 @@ Mongoat is a [MongoDB](https://www.mongodb.org/) lightweight wrapper adding hook
 
 It does not provides any ODM, model specifications, validation, or things that would force you to use it in a specific way. Mongoat is designed to be used in a MongoDB way: your way.
 
-## Documentation
-Because Mongoat is written on top of the mongodb native driver, you can find more about [here](http://mongodb.github.io/node-mongodb-native/2.0/api/)
-
 ## Features
 - Hooks (pre/post actions: afterSave, beforeSave, etc.)
 - Datetime documents easily (createdAt & updatedAt)
@@ -24,29 +21,14 @@ Because Mongoat is written on top of the mongodb native driver, you can find mor
 
 ## Installation
 ```
- $> npm install mongoat
+npm install mongoat
 ```
 
 ## Basic usage
 ```javascript
-var mongoat = require('mongoat');
-var url = 'mongodb://localhost:27017/myproject'; // Connection URL
-
-mongoat.MongoClient.connect(url)
-.then(function (db) {
-    // then use it the same way as native mongodb driver ex:
-    db.collection('Person').insert({ name: 'myName' })
-    .then(function (ObjectReturnedByMongodb) {
-    })
-    .catch(function (err) {
-    });
-
-    // you can also use callback instead of promise ex:
-    db.collection('Person').insert({ name: 'myName' }, 
-    function (err, ObjectReturnedByMongodb) {
-    });
-});
+var mongoat = require('mongoat'); //instead of require('mongodb');
 ```
+And then your ``mongoat`` object is to be used like the MongoDB native node.js driver. We just add some features on top of it, see below:
 
 ## Hooks
 You can add multiple before and after hooks for insertions, updates and removals:
@@ -84,7 +66,7 @@ db.collection('collectionName').after('remove', function (docToRemove) {
 ## Datetime
 Enable datetime feature:
 ```javascript
-    db.collection('collectionName').datetime(true); // Default is false
+db.collection('collectionName').datetime(true); // Default is false
 ```
 
 ### createdAt:
@@ -109,14 +91,14 @@ db.collection('collectionName').findAndModify(query, sort, update, options);
 ## Versioning
 Enable versioning feature:
 ```javascript
-    db.collection('collectionName').version(true); // Default is false
+db.collection('collectionName').version(true); // Default is false
 ```
 Enabling this feature for a collection, so each time you perform an insert/update/remove it will create a document in the collection collectionName.vermongo and increment the version of the updated document. The `_id` in this collection is a composite ID, `{ _id: _id, _version: _version }`. 
 The document in the MyCollection collection will also receive a _version field.
 
 If we want to restore a version
 ```javascript
-    db.collection('collectionName').restore(id, version);
+db.collection('collectionName').restore(id, version);
 ```
 
 * id of the document to restore is required
@@ -126,11 +108,11 @@ If we want to restore a version
 point of the version to restore (starting form last) ex:
 
 ```javascript
-    db.collection('collectionName').restore(0); // restore the last version
+db.collection('collectionName').restore(id, 0); // restore the last version
 ```
 
 ```javascript
-    db.collection('collectionName').restore(-2); // restore the last version -2
+db.collection('collectionName').restore(id, -2); // restore the last version -2
 ```
 
 more about versioning feature [here](https://github.com/thiloplanz/v7files/wiki/Vermongo)
