@@ -24,7 +24,7 @@ var Utils = {
 
   hasProperty: function(array, toFind) {
     return Object.keys(array).some(function (key) {
-      return ~key.indexOf(toFind);
+      return (key.indexOf(toFind) === 0);
     });
   },
 
