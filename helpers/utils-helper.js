@@ -31,15 +31,21 @@ var Utils = {
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
-        if (!document.$set && !document.$setOnInsert) {
-          document.updatedAt = new Date();
-          document.createdAt = new Date();
+        if (!Utils.hasProperty(document, '$')) {
+          document.updatedAt = document.updatedAt || new Date();
+          document.createdAt = document.createdAt || new Date();
         } else {
-          document.$set = document.$set || {};
-          document.$set.updatedAt = new Date();
+          if ((document.$setOnInsert && !document.$setOnInsert.createdAt) ||
+              (document.$set && !document.$set.createdAt)) {
+            document.$setOnInsert = document.$setOnInsert || {};
+            document.$setOnInsert.createdAt = new Date();
+          }
 
-          document.$setOnInsert = document.$setOnInsert || {};
-          document.$setOnInsert.createdAt = new Date();
+          if ((document.$setOnInsert && !document.$setOnInsert.updatedAt) ||
+              (document.$set && !document.$set.updatedAt)) {
+            document.$set = document.$set || {};
+            document.$set.updatedAt = document.$set.updatedAt || new Date();
+          }
         }
       } else if (opName === 'insert') {
         document.createdAt = new Date();
