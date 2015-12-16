@@ -22,7 +22,7 @@ var Utils = {
     return promises;
   },
 
-  hasProperty: function(array, toFind) {
+  hasPropertyWithStartingChar: function(array, toFind) {
     return Object.keys(array).some(function (key) {
       return (key.indexOf(toFind) === 0);
     });
@@ -32,7 +32,7 @@ var Utils = {
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
-        if (!Utils.hasProperty(document, '$')) {
+        if (!Utils.hasPropertyWithStartingChar(document, '$')) {
           document.updatedAt = document.updatedAt || new Date();
           document.createdAt = document.createdAt || new Date();
         } else {
