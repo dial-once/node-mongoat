@@ -28,6 +28,7 @@ var Utils = {
     });
   },
 
+  /*jshint maxcomplexity:14 */
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
