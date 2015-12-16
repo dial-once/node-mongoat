@@ -22,18 +22,31 @@ var Utils = {
     return promises;
   },
 
+  hasPropertyWithStartingChar: function(array, toFind) {
+    return Object.keys(array).some(function (key) {
+      return (key.indexOf(toFind) === 0);
+    });
+  },
+
+  /*jshint maxcomplexity:14 */
   setDatetime: function (opName, datetime, document) {
     if (datetime) {
       if (opName === 'update') {
-        if (!document.$set && !document.$setOnInsert) {
-          document.updatedAt = new Date();
-          document.createdAt = new Date();
+        if (!Utils.hasPropertyWithStartingChar(document, '$')) {
+          document.updatedAt = document.updatedAt || new Date();
+          document.createdAt = document.createdAt || new Date();
         } else {
-          document.$set = document.$set || {};
-          document.$set.updatedAt = new Date();
+          if ((document.$setOnInsert && !document.$setOnInsert.createdAt) ||
+              (document.$set && !document.$set.createdAt)) {
+            document.$setOnInsert = document.$setOnInsert || {};
+            document.$setOnInsert.createdAt = new Date();
+          }
 
-          document.$setOnInsert = document.$setOnInsert || {};
-          document.$setOnInsert.createdAt = new Date();
+          if ((document.$setOnInsert && !document.$setOnInsert.updatedAt) ||
+              (document.$set && !document.$set.updatedAt)) {
+            document.$set = document.$set || {};
+            document.$set.updatedAt = document.$set.updatedAt || new Date();
+          }
         }
       } else if (opName === 'insert') {
         document.createdAt = new Date();
