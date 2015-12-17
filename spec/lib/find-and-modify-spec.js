@@ -13,14 +13,15 @@ describe('FindAndModify', function () {
 
     mongoat.MongoClient.connect('mongodb://localhost:27017/mongoatTest')
     .then(function (db) {
-      db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person.findAndModify');
+      return db.dropDatabase();
+    })
+    .then(function () {
+      _this.testCol = _this.testDb.collection('Person.findAndModify');
       _this.testCol.datetime(true);
       _this.testCol.version(true);
-
-      done();
-    });
+    })
+    .then(done);
   });
 
   // close db after all tests
@@ -35,16 +36,18 @@ describe('FindAndModify', function () {
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.createdAt).toBeDefined();
       expect(mongObject.updatedAt).toBeDefined();
-
+    })
+    .then(function () {
       _this.testDb.dropDatabase();
+    })
+    .then(function () {
       _this.testDb.close();
-      done();
-    });
+    })
+    .then(done);
   });
 
   // test findAndModify without hooks
-  it('should upsert new document to Person collection',
-  function (done) {
+  it('should upsert new document to Person collection', function (done) {
     _this.testCol.findAndModify(
       { firstName: 'Yacine' },
       [['_id', 1]],
@@ -61,14 +64,12 @@ describe('FindAndModify', function () {
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(false);
       expect(mongObject.lastErrorObject.n).toBe(1);
-      
       done();
     });
   });
 
   // test with multiple before and after findAndModify hooks
-  it('should findAndModify document from Person collection and handle before and after update hooks',
-  function (done) {
+  it('should findAndModify document from Person collection and handle before and after update hooks', function (done) {
     // add before findAndModify hooks
     _this.testCol.before('update', function (document) {
       expect(document.$set.job).toBe('software engineer');
@@ -117,7 +118,8 @@ describe('FindAndModify', function () {
       [['_id', 1]],
       { $set: { job: 'software engineer' } },
       { upsert: true, new: true }
-    ).then(function (mongObject) {
+    )
+    .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.value).toBe('object');
       expect(typeof mongObject.lastErrorObject).toBe('object');
@@ -129,8 +131,7 @@ describe('FindAndModify', function () {
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
       expect(mongObject.lastErrorObject.n).toBe(1);
-
-      done();
-    });
+    })
+    .then(done);
   });
 });
