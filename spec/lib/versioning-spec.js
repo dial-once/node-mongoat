@@ -63,6 +63,16 @@ describe('Versioning', function () {
     .then(done);
   });
 
+  // test getVersion
+  it('should throw error, because of id undefined', function (done) {
+    try {
+      _this.testCol.getVersion();
+    } catch(err) {
+      expect(err.message).toBe('The provided id is null or undefined');
+      done();
+    }
+  });
+
   // test restore
   it('should throw error, because of id undefined', function (done) {
     try {
@@ -140,11 +150,35 @@ describe('Versioning', function () {
     .then(done);
   });
 
+  // test getVersion
+  it('should return null', function (done) {
+    _this.testCol.getVersion(id, -7)
+    .then(function (mongObject) {
+      expect(mongObject).toBe(null);
+    })
+    .then(done);
+  });
+
   // test restore
   it('should throw error', function (done) {
     _this.testCol.restore(id, -7)
     .catch(function (err) {
       expect(err.message).toBe('The requested version doesn\'t exist');
+    })
+    .then(done);
+  });
+
+  // test getVersion
+  it('should get version 2 of the document by version and id', function (done) {
+    _this.testCol.getVersion(id, 2)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(30);
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject._version).toBe(2);
     })
     .then(done);
   });
@@ -164,6 +198,21 @@ describe('Versioning', function () {
     .then(done);
   });
 
+  // test getVersion
+  it('should get version 3 of the document by version and id', function (done) {
+    _this.testCol.getVersion(id, 3)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(35);
+      expect(mongObject.job).toBe('software engineer');
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject._version).toBe(3);
+    })
+    .then(done);
+  });
+
   // test restore
   it('should restore version 3 of the document by version and id', function (done) {
     _this.testCol.restore(id, 3)
@@ -179,6 +228,20 @@ describe('Versioning', function () {
     .then(done);
   });
 
+  // test getVersion
+  it('should get last version of the document by version and id', function (done) {
+    _this.testCol.getVersion(id, 0)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(30);
+      expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject._version).toBe(4);
+    })
+    .then(done);
+  });
 
   // test restore
   it('should restore last version of the document by version and id', function (done) {
@@ -191,6 +254,21 @@ describe('Versioning', function () {
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
       expect(mongObject._version).toBe(6);
+    })
+    .then(done);
+  });
+
+  // test getVersion
+  it('should get version -2 of the document by version and id', function (done) {
+    _this.testCol.getVersion(id, -4)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject.company).toBeUndefined();
+      expect(mongObject._version).toBe(1);
     })
     .then(done);
   });
@@ -218,6 +296,21 @@ describe('Versioning', function () {
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
       expect(mongObject.result.n).toBe(1);
+    })
+    .then(done);
+  });
+
+  // test getVersion
+  it('should restore last version of the document by id', function (done) {
+    _this.testCol.getVersion(id)
+    .then(function (mongObject) {
+      expect(typeof mongObject).toBe('object');
+      expect(mongObject.firstName).toBe('Yacine');
+      expect(mongObject.lastName).toBe('KHATAL');
+      expect(mongObject.age).toBe(25);
+      expect(mongObject.job).toBeUndefined();
+      expect(mongObject.company).toBeUndefined();
+      expect(mongObject._version).toBe('deleted:7');
     })
     .then(done);
   });
