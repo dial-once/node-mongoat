@@ -63,13 +63,14 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should throw error',
+  it('should throw error, because of id undefined',
   function (done) {
-    _this.testCol.restore()
-    .catch(function (err) {
+    try {
+      _this.testCol.restore();
+    } catch(err) {
       expect(err.message).toBe('The provided id is null or undefined');
       done();
-    });
+    }
   });
 
   // test insert
