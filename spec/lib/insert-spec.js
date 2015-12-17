@@ -13,19 +13,20 @@ describe('Insert', function () {
 
     mongoat.MongoClient.connect('mongodb://localhost:27017/mongoatTest')
     .then(function (db) {
-      db.dropDatabase();
       _this.testDb = db;
-      _this.testCol = db.collection('Person.insert');
+      return db.dropDatabase();
+    })
+    .then(function () {
+      _this.testCol = _this.testDb.collection('Person.insert');
       _this.testCol.datetime(true);
-
-      done();
-    });
+      _this.testCol.version(true);
+    })
+    .then(done);
   });
 
   // close db after all tests
   afterAll(function (done) {
-    _this.testCol.find()
-    .toArray()
+    _this.testCol.find().toArray()
     .then(function (mongoArray) {
       expect(mongoArray.length).toBe(3);
 
@@ -39,16 +40,18 @@ describe('Insert', function () {
           expect(mongoArray[i].company).toBe('Dial Once');
         }
       }
-
+    })
+    .then(function () {
       _this.testDb.dropDatabase();
+    })
+    .then(function () {
       _this.testDb.close();
-      done();
-    });
+    })
+    .then(done);
   });
 
   // test insert without hooks
-  it('should insert new document to collection',
-  function (done) {
+  it('should insert new document to collection', function (done) {
     _this.testCol.insert({
       firstName: 'Yacine',
       lastName: 'KHATAL',
@@ -64,8 +67,7 @@ describe('Insert', function () {
   });
 
   // test insert without hooks
-  it('should insert new document to collection with static id',
-  function (done) {
+  it('should insert new document to collection with static id', function (done) {
     _this.testCol.insert({
       _id: 'TEST_ID',
       firstName: 'Yacine',
@@ -81,8 +83,7 @@ describe('Insert', function () {
     });
   });
 
-  it('should not insert but throw error, using callback',
-  function (done) {
+  it('should not insert but throw error, using callback', function (done) {
     _this.testCol.insert({
       _id: 'TEST_ID',
       firstName: 'Yacine',
@@ -95,8 +96,7 @@ describe('Insert', function () {
     });
   });
 
-  it('should not insert but throw error, using promise',
-  function (done) {
+  it('should not insert but throw error, using promise', function (done) {
     _this.testCol.insert({
       _id: 'TEST_ID',
       firstName: 'Yacine',
@@ -105,13 +105,12 @@ describe('Insert', function () {
     })
     .catch(function (err) {
       expect(err).toBeDefined();
-      done();
-    });
+    })
+    .then(done);
   });
 
   // test with multiple before and after insert hooks
-  it('should insert new document to collection and handle before and after insert hooks',
-  function (done) {
+  it('should insert new document to collection and handle before and after insert hooks', function (done) {
     // add before insert hooks
     _this.testCol.before('insert', function (document) {
       expect(document.firstName).toBe('Yacine');
@@ -153,7 +152,8 @@ describe('Insert', function () {
       firstName: 'Yacine',
       lastName: 'KHATAL',
       age: 25
-    }).then(function (mongObject) {
+    })
+    .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
       expect(typeof mongObject.result).toBe('object');
       expect(mongObject.result.ok).toBe(1);
@@ -163,8 +163,7 @@ describe('Insert', function () {
       expect(mongObject.ops[0].age).toBe(25);
       expect(mongObject.ops[0].email).toBe('khatal.yacine@gmail.com');
       expect(mongObject.ops[0].company).toBe('Dial Once');
-
-      done();
-    });
+    })
+    .then(done);
   });
 });
