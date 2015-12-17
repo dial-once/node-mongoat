@@ -166,6 +166,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(30);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
+      expect(mongObject._version).toBe(4);
 
       done();
     });
@@ -182,6 +183,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(35);
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.company).toBe('Dial Once');
+      expect(mongObject._version).toBe(5);
 
       done();
     });
@@ -199,6 +201,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(30);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBeUndefined();
+      expect(mongObject._version).toBe(6);
 
       done();
     });
@@ -215,6 +218,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(25);
       expect(mongObject.job).toBeUndefined();
       expect(mongObject.company).toBeUndefined();
+      expect(mongObject._version).toBe(7);
 
       done();
     });
@@ -245,6 +249,7 @@ describe('Versioning', function () {
       expect(mongObject.age).toBe(25);
       expect(mongObject.job).toBeUndefined();
       expect(mongObject.company).toBeUndefined();
+      expect(mongObject._version).toBe(8);
 
       done();
     });
