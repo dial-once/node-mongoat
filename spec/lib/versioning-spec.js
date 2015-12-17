@@ -150,7 +150,7 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore version 2 document by version', function (done) {
+  it('should restore version 2 of the document by version and id', function (done) {
     _this.testCol.restore(id, 2)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -165,7 +165,7 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore version 3 document by version', function (done) {
+  it('should restore version 3 of the document by version and id', function (done) {
     _this.testCol.restore(id, 3)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -181,7 +181,7 @@ describe('Versioning', function () {
 
 
   // test restore
-  it('should restore last version of the document by version', function (done) {
+  it('should restore last version of the document by version and id', function (done) {
     _this.testCol.restore(id, 0)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -196,7 +196,7 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore version -2 of the document by version', function (done) {
+  it('should restore version -2 of the document by version and id', function (done) {
     _this.testCol.restore(id, -4)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
@@ -223,7 +223,7 @@ describe('Versioning', function () {
   });
 
   // test restore
-  it('should restore lest version', function (done) {
+  it('should restore last version of the document by id', function (done) {
     _this.testCol.restore(id)
     .then(function (mongObject) {
       expect(typeof mongObject).toBe('object');
