@@ -19,7 +19,6 @@ describe('FindAndModify', function () {
     .then(function () {
       _this.testCol = _this.testDb.collection('Person.findAndModify');
       _this.testCol.datetime(true);
-      _this.testCol.version(true);
     })
     .then(done);
   });
@@ -31,7 +30,7 @@ describe('FindAndModify', function () {
     .then(function (mongObject) {
       expect(mongObject.firstName).toBe('Yacine');
       expect(mongObject.lastName).toBe('KHATAL');
-      expect(mongObject.age).toBe(25);
+      expect(mongObject.age).toBe(26);
       expect(mongObject.company).toBe('Dial Once');
       expect(mongObject.job).toBe('software engineer');
       expect(mongObject.createdAt).toBeDefined();
@@ -47,7 +46,7 @@ describe('FindAndModify', function () {
   });
 
   // test findAndModify without hooks
-  it('should upsert new document to Person collection', function (done) {
+  it('should upsert new document to Person collection [test with versionning disabled]', function (done) {
     _this.testCol.findAndModify(
       { firstName: 'Yacine' },
       [['_id', 1]],
@@ -64,6 +63,31 @@ describe('FindAndModify', function () {
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(false);
       expect(mongObject.lastErrorObject.n).toBe(1);
+      expect(mongObject.value._version).toBeUndefined();
+      done();
+    });
+  });
+
+  // test findAndModify without hooks
+  it('should update new document to Person collection [test with versionning enabled]', function (done) {
+    _this.testCol.version(true);
+    _this.testCol.findAndModify(
+      { firstName: 'Yacine' },
+      [['_id', 1]],
+      { $set: { age: 26 } },
+      { upsert: true, new: true },
+    function (err, mongObject) {
+      expect(err).toBe(null);
+      expect(typeof mongObject).toBe('object');
+      expect(typeof mongObject.value).toBe('object');
+      expect(typeof mongObject.lastErrorObject).toBe('object');
+      expect(mongObject.value.firstName).toBe('Yacine');
+      expect(mongObject.value.lastName).toBe('KHATAL');
+      expect(mongObject.value.age).toBe(26);
+      expect(mongObject.ok).toBe(1);
+      expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
+      expect(mongObject.lastErrorObject.n).toBe(1);
+      expect(mongObject.value._version).toBe(2);
       done();
     });
   });
@@ -91,7 +115,7 @@ describe('FindAndModify', function () {
       expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.job).toBe('software engineer');
       expect(mongObject.value.company).toBe('Dial Once');
-      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.value.age).toBe(26);
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
       expect(mongObject.lastErrorObject.n).toBe(1);
@@ -106,7 +130,7 @@ describe('FindAndModify', function () {
       expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.job).toBe('software engineer');
       expect(mongObject.value.company).toBe('Dial Once');
-      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.value.age).toBe(26);
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
       expect(mongObject.lastErrorObject.n).toBe(1);
@@ -127,7 +151,7 @@ describe('FindAndModify', function () {
       expect(mongObject.value.lastName).toBe('KHATAL');
       expect(mongObject.value.job).toBe('software engineer');
       expect(mongObject.value.company).toBe('Dial Once');
-      expect(mongObject.value.age).toBe(25);
+      expect(mongObject.value.age).toBe(26);
       expect(mongObject.ok).toBe(1);
       expect(mongObject.lastErrorObject.updatedExisting).toBe(true);
       expect(mongObject.lastErrorObject.n).toBe(1);
