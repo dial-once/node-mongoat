@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/dial-once/node-mongoat#readme",
   "dependencies": {
-    "lodash": "^4.0.0",
-    "mongodb": "^2.1.4"
+    "lodash": "4.0.0",
+    "mongodb": "2.1.4"
   },
   "devDependencies": {
     "codacy-coverage": "^1.1.3",
